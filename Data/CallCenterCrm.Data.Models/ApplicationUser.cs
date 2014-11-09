@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.EntityFramework;
-
-namespace CallCenterCrm.Data.Models
+﻿namespace CallCenterCrm.Data.Models
 {
+    using Microsoft.AspNet.Identity;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     public class ApplicationUser : IdentityUser
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -18,5 +18,9 @@ namespace CallCenterCrm.Data.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public int OfficeId { get; set; }
+
+        public Office Office { get; set; }
     }
 }
