@@ -11,6 +11,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using CallCenterCrm.Web.Models;
+using CallCenterCrm.Data.Models;
+using CallCenterCrm.Data;
 
 namespace CallCenterCrm.Web
 {

@@ -6,6 +6,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using CallCenterCrm.Web.Models;
+using CallCenterCrm.Data.Models;
+using CallCenterCrm.Data;
 
 namespace CallCenterCrm.Web
 {

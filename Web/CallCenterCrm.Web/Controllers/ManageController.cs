@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CallCenterCrm.Web.Models;
+using CallCenterCrm.Data.Models;
 
 namespace CallCenterCrm.Web.Controllers
 {
