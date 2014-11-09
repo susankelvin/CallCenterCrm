@@ -30,5 +30,7 @@
         public int Duration { get; set; }
 
         public string Notes { get; set; }
+
+        public string Customer { get; set; }
     }
 }
