@@ -65,7 +65,7 @@ namespace CallCenterCrm.Data
                 ApplicationUser admin = new ApplicationUser()
                 {
                     Email = @"admin@a.b",
-                    UserName = @"admin@a.b"
+                    UserName = @"Admin"
                 };
                 string password = @"adminpassword";
                 UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
