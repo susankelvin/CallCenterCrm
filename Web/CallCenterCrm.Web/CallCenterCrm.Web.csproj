@@ -172,6 +172,7 @@
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\Models\EditUserViewModel.cs" />
     <Compile Include="Areas\Administration\Models\UserViewModel.cs" />
+    <Compile Include="Areas\Administration\Controllers\OfficesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -210,6 +211,11 @@
     <Content Include="Areas\Administration\Views\Users\Details.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Offices\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Offices\Delete.cshtml" />
+    <Content Include="Areas\Administration\Views\Offices\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\Offices\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Offices\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

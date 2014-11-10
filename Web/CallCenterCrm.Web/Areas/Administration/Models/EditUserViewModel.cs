@@ -17,17 +17,22 @@
 
         public string Email { get; set; }
 
+        [Required]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
 
-        public int OfficeId { get; set; }
+        //[Required]
+        //[Display(Name = "Office")]
+        //public int OfficeId { get; set; }
 
-        [Display(Name="Office")]
-        public IEnumerable<SelectListItem> Offices { get; set; }
+        //[Display(Name="Office")]
+        //public IEnumerable<SelectListItem> Offices { get; set; }
 
+        [Required]
+        [Display(Name = "Role")]
         public string RoleId { get; set; }
 
-        [Display(Name = "Role")]
+        [Display(Name = "Roles")]
         public IEnumerable<SelectListItem> Roles { get; set; }
     }
 }

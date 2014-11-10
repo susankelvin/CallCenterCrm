@@ -2,18 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
+    using System.Web;
     using System.Web.Mvc;
-    using Microsoft.AspNet.Identity.Owin;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Administration.Models;
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.AspNet.Identity.Owin;
 
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
@@ -99,17 +100,17 @@
             List<SelectListItem> roles = context.Roles.Select(o => new SelectListItem()
             {
                 Text = o.Name,
-                Value = o.Id.ToString()
+                Value = o.Id
             }).ToList();
 
             string roleId = user.Roles.First().RoleId;
-            foreach (var item in roles)
-            {
-                if (item.Value == roleId)
-                {
-                    item.Selected = true;
-                }
-            }
+            //foreach (var item in roles)
+            //{
+            //    if (item.Value == roleId)
+            //    {
+            //        item.Selected = true;
+            //    }
+            //}
 
             EditUserViewModel model = new EditUserViewModel()
             {
@@ -117,7 +118,8 @@
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Offices = offices,
+                //Offices = offices,
+                RoleId = roleId,
                 Roles = roles
             };
 
@@ -129,15 +131,36 @@
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,OfficeId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public ActionResult Edit(EditUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                context.Entry(applicationUser).State = EntityState.Modified;
+                ApplicationUser user = this.context.Users.Find(model.Id);
+                if (user == null)
+                {
+                    this.TempData["ErrorMessage"] = "Invalid user id";
+                    this.RedirectToAction("Index");
+                }
+
+                var role = this.context.Roles.Find(model.RoleId);
+                if (role == null)
+                {
+                    this.TempData["ErrorMessage"] = "Invalid role";
+                    this.RedirectToAction("Index");
+                }
+
+                user.Roles.Clear();
+                var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                userManager.AddToRole(user.Id, role.Name);
+
+                user.PhoneNumber = model.PhoneNumber;
+                this.context.Entry(user).State = EntityState.Modified;
                 context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
-            return View(applicationUser);
+
+            return View(model);
         }
 
         // GET: Administration/Users/Delete/5

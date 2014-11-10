@@ -5,8 +5,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class Office
     {
@@ -15,6 +13,8 @@
         [Display(Name="Office")]
         public string Name { get; set; }
 
+        [Required]
+        [Display(Name="Manager")]
         public string ManagerId { get; set; }
 
         public ApplicationUser Manager { get; set; }
@@ -23,10 +23,14 @@
 
         public virtual ICollection<Campaign> Campaigns { get; set; }
 
+        [Required]
         public string Address { get; set; }
 
+        [Required]
+        [Display(Name="Phone number")]
         public string PhoneNumber { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
         public Office()
