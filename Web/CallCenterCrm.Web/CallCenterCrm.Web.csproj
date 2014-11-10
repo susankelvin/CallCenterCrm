@@ -170,6 +170,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Administration\Models\EditOfficeViewModel.cs" />
     <Compile Include="Areas\Administration\Models\EditUserViewModel.cs" />
     <Compile Include="Areas\Administration\Models\NewOfficeViewModel.cs" />
     <Compile Include="Areas\Administration\Models\UserViewModel.cs" />

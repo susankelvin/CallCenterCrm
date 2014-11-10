@@ -43,17 +43,11 @@
         public ActionResult Create()
         {
             NewOfficeViewModel model = new NewOfficeViewModel();
-            string roleManagerId = this.context.Roles.Where(r => r.Name == "Manager").First().Id;
-            List<SelectListItem> managers = this.context.Users.Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
-                                                .Select(u => new SelectListItem()
-                                                       {
-                                                           Text = u.UserName,
-                                                           Value = u.Id
-                                                       })
-                                                .ToList();
+            IEnumerable<SelectListItem> managers = GetManagers();
             model.Managers = managers;
             return View(model);
         }
+
 
         // POST: Administration/Offices/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -99,8 +93,19 @@
             {
                 return HttpNotFound();
             }
-            ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", office.ManagerId);
-            return View(office);
+
+            EditOfficeViewModel model = new EditOfficeViewModel()
+            {
+                OfficeId = office.OfficeId,
+                Address = office.Address,
+                Email = office.Email,
+                Name = office.Name,
+                PhoneNumber = office.PhoneNumber,
+                //ManagerId = office.Manager.Id,
+                Managers = this.GetManagers()
+            };
+            
+            return View(model);
         }
 
         // POST: Administration/Offices/Edit/5
@@ -108,16 +113,27 @@
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OfficeId,Name,ManagerId,Address,PhoneNumber,Email")] Office office)
+        public ActionResult Edit(EditOfficeViewModel model)
         {
             if (ModelState.IsValid)
             {
+                Office office = this.context.Offices.Find(model.OfficeId);
+                if (office == null)
+                {
+                    this.TempData["ErrorMessage"] = "Invalid office id";
+                    this.RedirectToAction("Index");
+                }
+
+                office.Address = model.Address;
+                office.Email = model.Email;
+                office.ManagerId = model.ManagerId;
+                office.PhoneNumber = model.PhoneNumber;
                 context.Entry(office).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", office.ManagerId);
-            return View(office);
+
+            return View(model);
         }
 
         // GET: Administration/Offices/Delete/5
@@ -153,6 +169,19 @@
                 context.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private IEnumerable<SelectListItem> GetManagers()
+        {
+            string roleManagerId = this.context.Roles.Where(r => r.Name == "Manager").First().Id;
+            List<SelectListItem> managers = this.context.Users.Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
+                                                .Select(u => new SelectListItem()
+                                                {
+                                                    Text = u.UserName,
+                                                    Value = u.Id
+                                                })
+                                                .ToList();
+            return managers;
         }
     }
 }

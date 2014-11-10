@@ -1,11 +1,9 @@
 ﻿namespace CallCenterCrm.Web.Areas.Administration.Models
 {
-    using CallCenterCrm.Data.Models;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
 
     public class NewOfficeViewModel
@@ -18,6 +16,7 @@
         [Display(Name = "Manager")]
         public string ManagerId { get; set; }
 
+        [Display(Name = "Managers")]
         public IEnumerable<SelectListItem> Managers { get; set; }
 
         [Required]
