@@ -8,6 +8,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class ApplicationUser : IdentityUser
     {
@@ -19,8 +20,9 @@
             return userIdentity;
         }
 
-        public int OfficeId { get; set; }
+        public Nullable<int> OfficeId { get; set; }
 
+        [ForeignKey("OfficeId")]
         public Office Office { get; set; }
     }
 }

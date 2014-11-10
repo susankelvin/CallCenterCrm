@@ -1,21 +1,21 @@
 ﻿@model IEnumerable<CallCenterCrm.Data.Models.Office>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Offices";
 }
 
-<h2>Index</h2>
+<h2>Offices</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Manager.Email)
+            @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.ManagerId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Address)
@@ -29,29 +29,30 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Manager.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.OfficeId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.OfficeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.OfficeId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manager.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OfficeId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.OfficeId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.OfficeId })
+            </td>
+        </tr>
+    }
 
 </table>

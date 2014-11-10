@@ -21,12 +21,12 @@
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
 
-        //[Required]
-        //[Display(Name = "Office")]
-        //public int OfficeId { get; set; }
+        [Required]
+        [Display(Name = "Office")]
+        public int OfficeId { get; set; }
 
-        //[Display(Name="Office")]
-        //public IEnumerable<SelectListItem> Offices { get; set; }
+        [Display(Name="Office")]
+        public IEnumerable<SelectListItem> Offices { get; set; }
 
         [Required]
         [Display(Name = "Role")]

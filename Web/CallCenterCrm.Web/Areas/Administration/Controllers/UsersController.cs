@@ -22,12 +22,14 @@
         // GET: Administration/Users
         public ActionResult Index()
         {
+            var x = context.Users.Include("Office").OrderBy(u => u.Email).Skip(2).First();
             var users = context.Users.Include("Office").Select(UserViewModel.FromUser).ToList();
             foreach (var user in users)
             {
                 IdentityRole role = context.Roles.Find(user.Role);
                 user.Role = role != null ? role.Name : "";
             }
+           
             return View(users);
         }
 
@@ -88,29 +90,13 @@
                 Value = o.OfficeId.ToString()
             }).ToList();
 
-            string officeId = user.OfficeId.ToString();
-            foreach (var item in offices)
+            List<SelectListItem> roles = context.Roles.Select(r => new SelectListItem()
             {
-                if (item.Value == officeId)
-                {
-                    item.Selected = true;
-                }
-            }
-
-            List<SelectListItem> roles = context.Roles.Select(o => new SelectListItem()
-            {
-                Text = o.Name,
-                Value = o.Id
+                Text = r.Name,
+                Value = r.Id
             }).ToList();
 
             string roleId = user.Roles.First().RoleId;
-            //foreach (var item in roles)
-            //{
-            //    if (item.Value == roleId)
-            //    {
-            //        item.Selected = true;
-            //    }
-            //}
 
             EditUserViewModel model = new EditUserViewModel()
             {
@@ -118,7 +104,8 @@
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                //Offices = offices,
+                OfficeId = user.OfficeId ?? 0,
+                Offices = offices,
                 RoleId = roleId,
                 Roles = roles
             };
@@ -150,12 +137,14 @@
                 }
 
                 user.Roles.Clear();
-                var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                userManager.AddToRole(user.Id, role.Name);
 
                 user.PhoneNumber = model.PhoneNumber;
+                user.OfficeId = model.OfficeId;
                 this.context.Entry(user).State = EntityState.Modified;
                 context.SaveChanges();
+
+                var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                userManager.AddToRole(user.Id, role.Name);
 
                 return RedirectToAction("Index");
             }

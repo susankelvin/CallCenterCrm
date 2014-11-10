@@ -10,7 +10,9 @@
     using System.Web.Mvc;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
+    using CallCenterCrm.Web.Areas.Administration.Models;
 
+    [Authorize(Roles="Admin")]
     public class OfficesController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
@@ -40,8 +42,17 @@
         // GET: Administration/Offices/Create
         public ActionResult Create()
         {
-            ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email");
-            return View();
+            NewOfficeViewModel model = new NewOfficeViewModel();
+            string roleManagerId = this.context.Roles.Where(r => r.Name == "Manager").First().Id;
+            List<SelectListItem> managers = this.context.Users.Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
+                                                .Select(u => new SelectListItem()
+                                                       {
+                                                           Text = u.UserName,
+                                                           Value = u.Id
+                                                       })
+                                                .ToList();
+            model.Managers = managers;
+            return View(model);
         }
 
         // POST: Administration/Offices/Create
@@ -49,17 +60,31 @@
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OfficeId,Name,ManagerId,Address,PhoneNumber,Email")] Office office)
+        public ActionResult Create(NewOfficeViewModel model)
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser manager = this.context.Users.Find(model.ManagerId);
+                if (manager == null)
+                {
+                    this.TempData["ErrorMessage"] = "Invalid manager";
+                    this.RedirectToAction("Index");
+                }
+
+                Office office = new Office()
+                {
+                    Address = model.Address,
+                    Email = model.Email,
+                    Name = model.Name,
+                    PhoneNumber = model.PhoneNumber,
+                    ManagerId = model.ManagerId
+                };
                 context.Offices.Add(office);
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", office.ManagerId);
-            return View(office);
+            return View(model);
         }
 
         // GET: Administration/Offices/Edit/5

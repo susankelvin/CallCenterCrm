@@ -10,7 +10,7 @@
     {
         public int OfficeId { get; set; }
 
-        [Display(Name="Office")]
+        [Display(Name="Office name")]
         public string Name { get; set; }
 
         [Required]
