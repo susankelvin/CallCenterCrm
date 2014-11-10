@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using System.Text;
@@ -10,6 +11,9 @@
     public class Office
     {
         public int OfficeId { get; set; }
+
+        [Display(Name="Office")]
+        public string Name { get; set; }
 
         public string ManagerId { get; set; }
 

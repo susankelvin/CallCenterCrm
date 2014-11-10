@@ -8,18 +8,27 @@
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
+    using Microsoft.AspNet.Identity.Owin;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
+    using CallCenterCrm.Web.Areas.Administration.Models;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     [Authorize(Roles="Admin")]
     public class UsersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext context = new ApplicationDbContext();
 
         // GET: Administration/Users
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            var users = context.Users.Include("Office").Select(UserViewModel.FromUser).ToList();
+            foreach (var user in users)
+            {
+                IdentityRole role = context.Roles.Find(user.Role);
+                user.Role = role != null ? role.Name : "";
+            }
+            return View(users);
         }
 
         // GET: Administration/Users/Details/5
@@ -29,7 +38,7 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = db.Users.Find(id);
+            ApplicationUser applicationUser = context.Users.Find(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -52,8 +61,8 @@
         {
             if (ModelState.IsValid)
             {
-                db.Users.Add(applicationUser);
-                db.SaveChanges();
+                context.Users.Add(applicationUser);
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +76,7 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = db.Users.Find(id);
+            ApplicationUser applicationUser = context.Users.Find(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -84,8 +93,8 @@
         {
             if (ModelState.IsValid)
             {
-                db.Entry(applicationUser).State = EntityState.Modified;
-                db.SaveChanges();
+                context.Entry(applicationUser).State = EntityState.Modified;
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(applicationUser);
@@ -98,7 +107,7 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = db.Users.Find(id);
+            ApplicationUser applicationUser = context.Users.Find(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -111,9 +120,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            ApplicationUser applicationUser = db.Users.Find(id);
-            db.Users.Remove(applicationUser);
-            db.SaveChanges();
+            ApplicationUser applicationUser = context.Users.Find(id);
+            context.Users.Remove(applicationUser);
+            context.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -121,7 +130,7 @@
         {
             if (disposing)
             {
-                db.Dispose();
+                context.Dispose();
             }
             base.Dispose(disposing);
         }
