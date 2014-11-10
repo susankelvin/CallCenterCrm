@@ -6,7 +6,6 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
-    using System.Web;
     using System.Web.Mvc;
     using Microsoft.AspNet.Identity.Owin;
     using CallCenterCrm.Data;
@@ -76,12 +75,53 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = context.Users.Find(id);
-            if (applicationUser == null)
+            ApplicationUser user = context.Users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(applicationUser);
+
+            List<SelectListItem> offices = context.Offices.Select(o => new SelectListItem()
+            {
+                Text = o.Name,
+                Value = o.OfficeId.ToString()
+            }).ToList();
+
+            string officeId = user.OfficeId.ToString();
+            foreach (var item in offices)
+            {
+                if (item.Value == officeId)
+                {
+                    item.Selected = true;
+                }
+            }
+
+            List<SelectListItem> roles = context.Roles.Select(o => new SelectListItem()
+            {
+                Text = o.Name,
+                Value = o.Id.ToString()
+            }).ToList();
+
+            string roleId = user.Roles.First().RoleId;
+            foreach (var item in roles)
+            {
+                if (item.Value == roleId)
+                {
+                    item.Selected = true;
+                }
+            }
+
+            EditUserViewModel model = new EditUserViewModel()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Offices = offices,
+                Roles = roles
+            };
+
+            return View(model);
         }
 
         // POST: Administration/Users/Edit/5
