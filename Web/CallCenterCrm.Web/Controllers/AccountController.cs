@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using CallCenterCrm.Web.Models;
 using CallCenterCrm.Data.Models;
 using CallCenterCrm.Data;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace CallCenterCrm.Web.Controllers
 {
@@ -165,6 +166,7 @@ namespace CallCenterCrm.Web.Controllers
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
+                        this.UserManager.AddToRole(user.Id, "Customer");
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                         // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
