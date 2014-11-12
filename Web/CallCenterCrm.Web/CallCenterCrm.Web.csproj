@@ -49,6 +49,21 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="Glimpse.Ado">
+      <HintPath>..\..\packages\Glimpse.Ado.1.7.3\lib\net45\Glimpse.Ado.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.AspNet">
+      <HintPath>..\..\packages\Glimpse.AspNet.1.9.2\lib\net45\Glimpse.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\..\packages\Glimpse.1.8.6\lib\net45\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.EF6">
+      <HintPath>..\..\packages\Glimpse.EF6.1.6.5\lib\net45\Glimpse.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc5">
+      <HintPath>..\..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -189,14 +204,17 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
-    <Compile Include="Areas\Administration\Models\EditOfficeViewModel.cs" />
-    <Compile Include="Areas\Administration\Models\EditUserViewModel.cs" />
-    <Compile Include="Areas\Administration\Models\NewOfficeViewModel.cs" />
-    <Compile Include="Areas\Administration\Models\UserViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\Office\EditOfficeViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\Office\IndexOfficeViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\Office\OfficeViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\User\EditUserViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\Office\NewOfficeViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\User\UserViewModel.cs" />
     <Compile Include="Areas\Administration\Controllers\OfficesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
