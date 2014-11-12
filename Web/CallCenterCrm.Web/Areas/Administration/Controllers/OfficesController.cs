@@ -10,7 +10,7 @@
     using System.Web.Mvc;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
-    using CallCenterCrm.Web.Areas.Administration.Models;
+    using CallCenterCrm.Web.Areas.Administration.Models.Office;
 
     [Authorize(Roles="Admin")]
     public class OfficesController : Controller
@@ -20,7 +20,15 @@
         // GET: Administration/Offices
         public ActionResult Index()
         {
-            var offices = context.Offices.Include(o => o.Manager);
+            var offices = context.Offices.Include(o => o.Manager).Select(o =>  new IndexOfficeViewModel()
+            {
+                Address = o.Address,
+                Email = o.Email,
+                ManagerName = o.Manager.UserName,
+                Name = o.Name,
+                OfficeId = o.OfficeId,
+                PhoneNumber = o.PhoneNumber
+            });
             return View(offices.ToList());
         }
 

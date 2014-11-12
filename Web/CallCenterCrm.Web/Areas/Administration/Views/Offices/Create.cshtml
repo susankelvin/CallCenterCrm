@@ -1,4 +1,4 @@
-﻿@model CallCenterCrm.Web.Areas.Administration.Models.NewOfficeViewModel
+﻿@model CallCenterCrm.Web.Areas.Administration.Models.Office.NewOfficeViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Office</h4>
+        @*<h4>Office</h4>*@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

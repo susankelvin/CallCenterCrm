@@ -5,8 +5,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web.Mvc;
-    using CallCenterCrm.Data.Models;
-    using Microsoft.AspNet.Identity.EntityFramework;
 
     public class EditUserViewModel
     {
