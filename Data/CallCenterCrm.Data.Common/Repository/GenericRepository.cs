@@ -27,7 +27,7 @@
             return this.DbSet.AsQueryable();
         }
 
-        public virtual T GetById(int id)
+        public virtual T GetById(object id)
         {
             return this.DbSet.Find(id);
         }
