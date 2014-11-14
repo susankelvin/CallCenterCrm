@@ -226,7 +226,6 @@
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Delete.cshtml" />
-    <Content Include="Areas\Administration\Views\Users\Details.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Offices\Create.cshtml" />

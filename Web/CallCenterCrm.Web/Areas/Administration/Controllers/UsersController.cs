@@ -33,21 +33,6 @@
             return View(users);
         }
 
-        // GET: Administration/Users/Details/5
-        public ActionResult Details(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser applicationUser = context.Users.Find(id);
-            if (applicationUser == null)
-            {
-                return HttpNotFound();
-            }
-            return View(applicationUser);
-        }
-
         // GET: Administration/Users/Create
         public ActionResult Create()
         {
@@ -150,21 +135,6 @@
             }
 
             return View(model);
-        }
-
-        // GET: Administration/Users/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser applicationUser = context.Users.Find(id);
-            if (applicationUser == null)
-            {
-                return HttpNotFound();
-            }
-            return View(applicationUser);
         }
 
         // POST: Administration/Users/Delete/5

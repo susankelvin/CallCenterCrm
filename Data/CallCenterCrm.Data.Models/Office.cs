@@ -8,6 +8,7 @@
 
     public class Office : BaseModel
     {
+        [Key]
         public int OfficeId { get; set; }
 
         [Required]
