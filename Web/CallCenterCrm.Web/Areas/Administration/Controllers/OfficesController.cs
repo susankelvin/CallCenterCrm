@@ -128,29 +128,22 @@
             return View(model);
         }
 
-        // GET: Administration/Offices/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Office office = context.Offices.Find(id);
-            if (office == null)
-            {
-                return HttpNotFound();
-            }
-            return View(office);
-        }
-
         // POST: Administration/Offices/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            //Office office = context.Offices.Find(id);
-            //context.Offices.Remove(office);
-            //context.SaveChanges();
+            Office office = context.Offices.Find(id);
+            if (office != null)
+            {
+                context.Offices.Remove(office);
+                context.SaveChanges();
+            }
+            else
+            {
+                this.TempData["ErrorMessage"] = "Invalid message id";
+            }
+
             return RedirectToAction("Index");
         }
 
