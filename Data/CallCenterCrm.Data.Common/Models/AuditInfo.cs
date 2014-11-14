@@ -1,4 +1,4 @@
-﻿namespace ForumSystem.Data.Common.Models
+﻿namespace CallCenterCrm.Data.Models
 {
     using System;
     using System.ComponentModel.DataAnnotations.Schema;

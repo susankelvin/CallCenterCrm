@@ -3,10 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using CallCenterCrm.Data.Models.Base;
 
-    public class Status
+    public class Status : BaseModel
     {
         public int StatusId { get; set; }
 

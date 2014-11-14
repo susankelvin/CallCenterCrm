@@ -83,6 +83,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CallCenterCrm.Data.Common\CallCenterCrm.Data.Common.csproj">
+      <Project>{e599ae4a-c068-4c37-b971-de6cc621c6d4}</Project>
+      <Name>CallCenterCrm.Data.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CallCenterCrm.Data.Models\CallCenterCrm.Data.Models.csproj">
       <Project>{2af63ecb-4b93-4ded-9935-532581479749}</Project>
       <Name>CallCenterCrm.Data.Models</Name>

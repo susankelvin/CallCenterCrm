@@ -2,13 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using CallCenterCrm.Data.Models.Base;
 
-    public class Campaign
+    public class Campaign : BaseModel
     {
         public int CampaignId { get; set; }
 
@@ -26,11 +23,11 @@
 
         public string ManagerId { get; set; }
 
-        public ApplicationUser Manager { get; set; }
+        public virtual ApplicationUser Manager { get; set; }
 
         public bool Active { get; set; }
 
-        public ICollection<Office> Offices { get; set; }
+        public virtual ICollection<Office> Offices { get; set; }
 
         public virtual ICollection<CallResult> CallResults { get; set; }
 

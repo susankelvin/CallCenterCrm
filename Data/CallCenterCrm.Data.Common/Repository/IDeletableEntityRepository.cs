@@ -1,4 +1,4 @@
-﻿namespace ForumSystem.Data.Common.Repository
+﻿namespace CallCenterCrm.Data.Common.Repository
 {
     using System.Linq;
 

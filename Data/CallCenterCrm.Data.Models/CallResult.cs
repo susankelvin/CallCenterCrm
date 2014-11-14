@@ -1,25 +1,22 @@
 ﻿namespace CallCenterCrm.Data.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using CallCenterCrm.Data.Models.Base;
 
-    public class CallResult
+    public class CallResult : BaseModel
     {
         [Key]
         public int CallResultId { get; set; }
 
         public int CampaignId { get; set; }
 
-        public Campaign Campaign { get; set; }
+        public virtual Campaign Campaign { get; set; }
 
         public string OperatorId { get; set; }
 
-        public ApplicationUser Operator { get; set; }
+        public virtual ApplicationUser Operator { get; set; }
 
         public int StatusId { get; set; }
 

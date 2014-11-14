@@ -1,16 +1,14 @@
 ﻿namespace CallCenterCrm.Data.Models
 {
-    using Microsoft.AspNet.Identity;
     using System;
-    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using System.Security.Claims;
-    using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, IDeletableEntity
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -23,6 +21,10 @@
         public Nullable<int> OfficeId { get; set; }
 
         [ForeignKey("OfficeId")]
-        public Office Office { get; set; }
+        public virtual Office Office { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
     }
 }

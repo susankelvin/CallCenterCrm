@@ -3,21 +3,20 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using CallCenterCrm.Data.Models.Base;
 
-    public class Office
+    public class Office : BaseModel
     {
         public int OfficeId { get; set; }
 
-        [Display(Name="Office name")]
+        [Required]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name="Manager")]
         public string ManagerId { get; set; }
 
-        public ApplicationUser Manager { get; set; }
+        public virtual ApplicationUser Manager { get; set; }
 
         public virtual ICollection<ApplicationUser> Operators { get; set; }
 
@@ -27,7 +26,6 @@
         public string Address { get; set; }
 
         [Required]
-        [Display(Name="Phone number")]
         public string PhoneNumber { get; set; }
 
         [Required]

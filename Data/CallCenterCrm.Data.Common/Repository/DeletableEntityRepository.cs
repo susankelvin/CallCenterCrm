@@ -1,11 +1,11 @@
-﻿namespace ForumSystem.Data.Common.Repository
+﻿namespace CallCenterCrm.Data.Common.Repository
 {
     using System.Data.Entity;
     using System.Linq;
 
-    using ForumSystem.Data.Common.Models;
     using System;
     using System.Data.Entity.Infrastructure;
+    using CallCenterCrm.Data.Models;
 
     public class DeletableEntityRepository<T> : GenericRepository<T>, IDeletableEntityRepository<T>
         where T : class, IDeletableEntity
