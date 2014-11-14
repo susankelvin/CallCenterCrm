@@ -12,7 +12,7 @@
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Administration.Models.Office;
 
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles = "Admin")]
     public class OfficesController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
@@ -20,7 +20,7 @@
         // GET: Administration/Offices
         public ActionResult Index()
         {
-            var offices = context.Offices.Include(o => o.Manager).Select(o =>  new IndexOfficeViewModel()
+            var offices = context.Offices.Include(o => o.Manager).Select(o => new IndexOfficeViewModel()
             {
                 Address = o.Address,
                 Email = o.Email,
@@ -36,11 +36,10 @@
         public ActionResult Create()
         {
             NewOfficeViewModel model = new NewOfficeViewModel();
-            IEnumerable<SelectListItem> managers = GetManagers();
+            IEnumerable<SelectListItem> managers = this.GetManagers();
             model.Managers = managers;
             return View(model);
         }
-
 
         // POST: Administration/Offices/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -97,7 +96,7 @@
                 //ManagerId = office.Manager.Id,
                 Managers = this.GetManagers()
             };
-            
+
             return View(model);
         }
 
@@ -149,9 +148,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Office office = context.Offices.Find(id);
-            context.Offices.Remove(office);
-            context.SaveChanges();
+            //Office office = context.Offices.Find(id);
+            //context.Offices.Remove(office);
+            //context.SaveChanges();
             return RedirectToAction("Index");
         }
 
