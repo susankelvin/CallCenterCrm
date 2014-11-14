@@ -1,22 +1,22 @@
-﻿namespace CallCenterCrm.Web.Areas.Administration
+﻿namespace CallCenterCrm.Web.Areas.Manage
 {
     using System.Web.Mvc;
 
-    public class AdministrationAreaRegistration : AreaRegistration 
+    public class ManageAreaRegistration : AreaRegistration 
     {
         public override string AreaName 
         {
             get 
             {
-                return "Administration";
+                return "Manage";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                "Administration_default",
-                "Administration/{controller}/{action}/{id}",
+                "Manage_default",
+                "Manage/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

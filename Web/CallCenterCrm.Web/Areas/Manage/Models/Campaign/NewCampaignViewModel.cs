@@ -1,20 +1,20 @@
-﻿namespace CallCenterCrm.Data.Models
+﻿namespace CallCenterCrm.Web.Areas.Manage.Models.Campaign
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using CallCenterCrm.Data.Models.Base;
+    using System.Web;
+    using System.Web.Mvc;
 
-    public class Campaign : BaseModel
+    public class NewCampaignViewModel
     {
-        [Key]
-        public int CampaignId { get; set; }
-
         [Required]
+        [Display(Name="Start date")]
         public DateTime StartDate { get; set; }
 
         [Required]
+        [Display(Name = "End date")]
         public DateTime EndDate { get; set; }
 
         [Required]
@@ -29,23 +29,7 @@
         [Required]
         public string Script { get; set; }
 
-        public string ManagerId { get; set; }
-
-        public virtual ApplicationUser Manager { get; set; }
-
         [Required]
         public bool Active { get; set; }
-
-        [Required]
-        public int OfficeId { get; set; }
-
-        public virtual Office Office { get; set; }
-
-        public virtual ICollection<CallResult> CallResults { get; set; }
-
-        public Campaign()
-        {
-            this.CallResults = new HashSet<CallResult>();
-        }
     }
 }

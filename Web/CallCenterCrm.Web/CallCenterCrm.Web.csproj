@@ -199,6 +199,9 @@
     <Compile Include="Areas\Administration\Models\Office\NewOfficeViewModel.cs" />
     <Compile Include="Areas\Administration\Models\User\UserViewModel.cs" />
     <Compile Include="Areas\Administration\Controllers\OfficesController.cs" />
+    <Compile Include="Areas\Manage\Controllers\CampaignsController.cs" />
+    <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
+    <Compile Include="Areas\Manage\Models\Campaign\NewCampaignViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -447,7 +450,6 @@
     <Content Include="Areas\Administration\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Offices\Create.cshtml" />
-    <Content Include="Areas\Administration\Views\Offices\Delete.cshtml" />
     <Content Include="Areas\Administration\Views\Offices\Details.cshtml" />
     <Content Include="Areas\Administration\Views\Offices\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Offices\Index.cshtml" />
@@ -458,6 +460,13 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\Kendo\images\kendoui.ttf" />
     <Content Include="Content\Kendo\images\kendoui.woff" />
+    <Content Include="Areas\Manage\Views\web.config" />
+    <Content Include="Areas\Manage\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Manage\Views\Campaigns\Create.cshtml" />
+    <Content Include="Areas\Manage\Views\Campaigns\Delete.cshtml" />
+    <Content Include="Areas\Manage\Views\Campaigns\Details.cshtml" />
+    <Content Include="Areas\Manage\Views\Campaigns\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\Campaigns\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -473,6 +482,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Kendo\kendo.all.min.js" />
     <Content Include="Scripts\Kendo\kendo.aspnetmvc.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -536,6 +546,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Administration\Views\Shared\" />
+    <Folder Include="Areas\Manage\Views\Shared\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
