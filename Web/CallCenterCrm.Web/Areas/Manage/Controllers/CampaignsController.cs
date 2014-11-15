@@ -22,7 +22,8 @@
     {
         private ApplicationDbContext context = new ApplicationDbContext();
 
-        public CampaignsController() : base()
+        public CampaignsController()
+            : base()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
@@ -133,30 +134,18 @@
             return Json(new[] { model }.ToDataSourceResult(request));
         }
 
-        // GET: Manage/Campaigns/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Campaign campaign = context.Campaigns.Find(id);
-            if (campaign == null)
-            {
-                return HttpNotFound();
-            }
-            return View(campaign);
-        }
-
         // POST: Manage/Campaigns/Delete/5
         [HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed([DataSourceRequest]DataSourceRequest request, IndexViewModel model)
         {
-            //Campaign campaign = context.Campaigns.Find(id);
-            //context.Campaigns.Remove(campaign);
-            //context.SaveChanges();
-            return RedirectToAction("Index");
+            Campaign campaign = context.Campaigns.Find(model.CampaignId);
+            if (campaign != null)
+            {
+                this.context.Campaigns.Remove(campaign);
+                this.context.SaveChanges();
+            }
+
+            return Json(new[] { model }.ToDataSourceResult(request));
         }
 
         protected override void Dispose(bool disposing)

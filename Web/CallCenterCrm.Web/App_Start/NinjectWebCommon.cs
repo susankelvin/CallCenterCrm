@@ -4,10 +4,11 @@
 namespace CallCenterCrm.Web.App_Start
 {
     using System;
+    using System.Data.Entity;
     using System.Web;
-
+    using CallCenterCrm.Data;
+    using CallCenterCrm.Data.Common.Repository;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Web.Common;
 
@@ -61,6 +62,8 @@ namespace CallCenterCrm.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<DbContext>().To<ApplicationDbContext>();
+            kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
         }        
     }
 }

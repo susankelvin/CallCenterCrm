@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="CallCenterCrmData.cs" />
+    <Compile Include="ICallCenterCrmData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
