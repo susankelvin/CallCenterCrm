@@ -1,29 +1,23 @@
-﻿namespace CallCenterCrm.Data.Models
+﻿namespace CallCenterCrm.Web.Areas.Operator.Models.CallResult
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using CallCenterCrm.Data.Models.Base;
+    using System.Web.Mvc;
 
-    public class CallResult : BaseModel
+    public class NewCallResultModel
     {
-        [Key]
         public int CallResultId { get; set; }
 
-        [Required]
+        [Display(Name="Campaign")]
         public int CampaignId { get; set; }
 
-        public virtual Campaign Campaign { get; set; }
+        public IEnumerable<SelectListItem> Campaigns { get; set; }
 
-        [Required]
-        public string OperatorId { get; set; }
-
-        public virtual ApplicationUser Operator { get; set; }
-
-        [Required]
+        [Display(Name = "Status")]
         public int StatusId { get; set; }
 
-        public Status Status { get; set; }
+        public IEnumerable<SelectListItem> Statuses { get; set; }
 
         [Required]
         public DateTime CallDate { get; set; }

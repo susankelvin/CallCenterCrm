@@ -12,6 +12,10 @@
     using System.Web.Mvc;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
+    using CallCenterCrm.Web.Areas.Operator.Models;
+    using Microsoft.AspNet.Identity;
+    using AutoMapper;
+    using CallCenterCrm.Web.Areas.Operator.Models.CallResult;
 
     public class CallResultsController : Controller
     {
@@ -28,8 +32,9 @@
         // GET: Operator/CallResults
         public ActionResult Index()
         {
-            var callResults = db.CallResults.Include(c => c.Campaign).Include(c => c.Operator).Include(c => c.Status);
-            return View(callResults.ToList());
+            var calls = this.data.CallResults.All()
+                            .ToList();
+            return View(calls);
         }
 
         // GET: Operator/CallResults/Details/5
@@ -50,30 +55,52 @@
         // GET: Operator/CallResults/Create
         public ActionResult Create()
         {
-            //ViewBag.CampaignId = new SelectList(db.Campaigns, "CampaignId", "Product");
-            //ViewBag.OperatorId = new SelectList(db.ApplicationUsers, "Id", "Email");
-            //ViewBag.StatusId = new SelectList(db.Statuses, "StatusId", "Description");
-            return View();
+            var statuses = this.data.Statuses.All()
+                               .Select(s => new SelectListItem()
+                               {
+                                   Text = s.Description,
+                                   Value = s.StatusId.ToString()
+                               })
+                               .ToList();
+
+            string operatorId = this.User.Identity.GetUserId();
+            ApplicationUser user = this.data.Users.Find(operatorId);
+            int officeId = user.OfficeId ?? 0;
+
+            var campaigns = this.data.Campaigns.All()
+                                .Where(c => c.OfficeId == officeId)
+                                .Select(c => new SelectListItem()
+                                {
+                                    Text = c.Description,
+                                    Value = c.CampaignId.ToString()
+                                })
+                                .ToList();
+
+            NewCallResultModel model = new NewCallResultModel()
+            {
+                Campaigns = campaigns,
+                Statuses = statuses,
+                CallDate = DateTime.Now
+            };
+            return View(model);
         }
 
         // POST: Operator/CallResults/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CallResultId,CampaignId,OperatorId,StatusId,CallDate,Duration,Notes,Customer,IsDeleted,DeletedOn")] CallResult callResult)
+        public ActionResult Create(NewCallResultModel model)
         {
             if (ModelState.IsValid)
             {
-                db.CallResults.Add(callResult);
-                db.SaveChanges();
+                CallResult callResult = new CallResult();
+                Mapper.Map(model, callResult);
+                callResult.OperatorId = this.User.Identity.GetUserId();
+                this.data.CallResults.Add(callResult);
+                this.data.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.CampaignId = new SelectList(db.Campaigns, "CampaignId", "Product", callResult.CampaignId);
-            //ViewBag.OperatorId = new SelectList(db.ApplicationUsers, "Id", "Email", callResult.OperatorId);
-            //ViewBag.StatusId = new SelectList(db.Statuses, "StatusId", "Description", callResult.StatusId);
-            return View(callResult);
+            return View(model);
         }
 
         // GET: Operator/CallResults/Edit/5
@@ -99,7 +126,8 @@
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CallResultId,CampaignId,OperatorId,StatusId,CallDate,Duration,Notes,Customer,IsDeleted,DeletedOn")] CallResult callResult)
+        public ActionResult Edit([Bind(Include = "CallResultId,CampaignId,OperatorId,StatusId,CallDate,Duration,Notes,Customer,IsDeleted,DeletedOn")]
+                                 CallResult callResult)
         {
             if (ModelState.IsValid)
             {
