@@ -480,9 +480,6 @@
     <Content Include="Areas\Operator\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Operator\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Operator\Views\CallResults\Create.cshtml" />
-    <Content Include="Areas\Operator\Views\CallResults\Delete.cshtml" />
-    <Content Include="Areas\Operator\Views\CallResults\Details.cshtml" />
-    <Content Include="Areas\Operator\Views\CallResults\Edit.cshtml" />
     <Content Include="Areas\Operator\Views\CallResults\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />

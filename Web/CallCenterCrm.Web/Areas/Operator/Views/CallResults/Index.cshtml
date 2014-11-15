@@ -29,6 +29,7 @@
                                     .PageSizes(true)
                                     .ButtonCount(5))
       .Sortable()
+      .Filterable()
       .DataSource(data => data.Ajax()
                               .Read("Read", "CallResults")
                               .PageSize(10)
