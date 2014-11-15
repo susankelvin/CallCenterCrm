@@ -199,10 +199,10 @@
     <Compile Include="Areas\Administration\Models\Office\NewOfficeViewModel.cs" />
     <Compile Include="Areas\Administration\Models\User\UserViewModel.cs" />
     <Compile Include="Areas\Administration\Controllers\OfficesController.cs" />
-    <Compile Include="Areas\Manage\Controllers\CampaignsController.cs" />
-    <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
-    <Compile Include="Areas\Manage\Models\Campaign\IndexViewModel.cs" />
-    <Compile Include="Areas\Manage\Models\Campaign\NewCampaignViewModel.cs" />
+    <Compile Include="Areas\Manager\Controllers\CampaignsController.cs" />
+    <Compile Include="Areas\Manager\ManageAreaRegistration.cs" />
+    <Compile Include="Areas\Manager\Models\Campaign\IndexViewModel.cs" />
+    <Compile Include="Areas\Manager\Models\Campaign\NewCampaignViewModel.cs" />
     <Compile Include="Areas\Operator\Controllers\ActiveCampaignsController.cs" />
     <Compile Include="Areas\Operator\Controllers\CallResultsController.cs" />
     <Compile Include="Areas\Operator\Models\ActiveCampaigns\IndexActiveCampaignsModel.cs" />
@@ -468,16 +468,16 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\Kendo\images\kendoui.ttf" />
     <Content Include="Content\Kendo\images\kendoui.woff" />
-    <Content Include="Areas\Manage\Views\web.config">
+    <Content Include="Areas\Manager\Views\web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Areas\Manage\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Manage\Views\Campaigns\Create.cshtml" />
-    <Content Include="Areas\Manage\Views\Campaigns\Delete.cshtml" />
-    <Content Include="Areas\Manage\Views\Campaigns\Details.cshtml" />
-    <Content Include="Areas\Manage\Views\Campaigns\Edit.cshtml" />
-    <Content Include="Areas\Manage\Views\Campaigns\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Areas\Manager\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Manager\Views\Campaigns\Create.cshtml" />
+    <Content Include="Areas\Manager\Views\Campaigns\Delete.cshtml" />
+    <Content Include="Areas\Manager\Views\Campaigns\Details.cshtml" />
+    <Content Include="Areas\Manager\Views\Campaigns\Edit.cshtml" />
+    <Content Include="Areas\Manager\Views\Campaigns\Index.cshtml" />
+    <Content Include="Areas\Manager\Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Areas\Operator\Views\web.config" />
     <Content Include="Areas\Operator\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Operator\Views\CallResults\Create.cshtml" />
