@@ -105,37 +105,32 @@
             return View(model);
         }
 
-        // GET: Manage/Campaigns/Edit/5
-        public ActionResult Edit(int? campaignid)
-        {
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //Campaign campaign = context.Campaigns.Find(id);
-            //if (campaign == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", campaign.ManagerId);
-            return View();
-        }
-
         // POST: Manage/Campaigns/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(IndexViewModel campaign)
+        public ActionResult Edit([DataSourceRequest]DataSourceRequest request, IndexViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    context.Entry(campaign).State = EntityState.Modified;
-            //    context.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-            //ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", campaign.ManagerId);
-            return View(campaign);
+            if (ModelState.IsValid)
+            {
+                Campaign campaign = new Campaign()
+                {
+                    Active = model.Active,
+                    CampaignId = model.CampaignId,
+                    Description = model.Description,
+                    EndDate = model.EndDate,
+                    ManagerId = this.User.Identity.GetUserId(),
+                    Price = model.Price,
+                    Product = model.Product,
+                    Script = model.Script,
+                    StartDate = model.StartDate
+                };
+                ApplicationUser user = this.context.Users.Find(campaign.ManagerId);
+                campaign.OfficeId = user.OfficeId ?? 0;
+                var entry = this.context.Entry(campaign);
+                entry.State = EntityState.Modified;
+                this.context.SaveChanges();
+            }
+
+            return Json(new[] { model }.ToDataSourceResult(request));
         }
 
         // GET: Manage/Campaigns/Delete/5

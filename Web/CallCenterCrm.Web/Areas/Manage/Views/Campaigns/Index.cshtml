@@ -24,14 +24,10 @@
         columns.Bound(c => c.Price);
         columns.Bound(c => c.Script);
         columns.Bound(c => c.Active);
-        columns.Command(command => { /*command.Edit(); command.Destroy();*/ });
+        columns.Command(command => { command.Edit(); command.Destroy(); });
         columns.Bound(p => p.CampaignId).Title("")
             .Sortable(false)
-            .ClientTemplate(
-                            "<a href='" +
-                            Url.Action("Edit", "Campaigns") +
-                            "/#= CampaignId #'" +
-                            ">Edit</a>");
+            .ClientTemplate("<a href='" + Url.Action("Edit", "Campaigns") + "/#= CampaignId #'" + ">Edit</a>");
     })
     .Pageable(pageable => pageable
                               .Refresh(true)
