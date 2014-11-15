@@ -2,24 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
-    using System.Net;
     using System.Threading;
-    using System.Web;
     using System.Web.Mvc;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
-    using Microsoft.AspNet.Identity;
-    using AutoMapper;
     using CallCenterCrm.Web.Areas.Operator.Models.CallResult;
-    using AutoMapper.QueryableExtensions;
-    using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+    using Microsoft.AspNet.Identity;
 
-    [Authorize]
+    [Authorize(Roles = "Operator")]
     public class CallResultsController : Controller
     {
         private readonly ICallCenterCrmData data;

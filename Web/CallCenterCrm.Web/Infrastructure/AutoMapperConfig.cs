@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using CallCenterCrm.Data.Models;
+    using CallCenterCrm.Web.Areas.Operator.Models.ActiveCampaigns;
     using CallCenterCrm.Web.Areas.Operator.Models.CallResult;
 
     public static class AutoMapperConfig
@@ -13,6 +14,10 @@
             Mapper.CreateMap(typeof(NewCallResultModel), typeof(CallResult));
             Mapper.CreateMap(typeof(IndexCallResultModel), typeof(CallResult));
             Mapper.CreateMap(typeof(CallResult), typeof(IndexCallResultModel));
+
+            // Active campaigns
+            Mapper.CreateMap(typeof(Campaign), typeof(IndexActiveCampaignsModel));
+            Mapper.CreateMap(typeof(IndexActiveCampaignsModel), typeof(Campaign));
         }
     }
 }

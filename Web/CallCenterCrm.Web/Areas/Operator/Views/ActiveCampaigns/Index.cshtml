@@ -1,0 +1,32 @@
+﻿@using CallCenterCrm.Web.Areas.Operator.Models.ActiveCampaigns
+
+@model IEnumerable<IndexActiveCampaignsModel>
+
+@{
+    ViewBag.Title = "Active campaigns";
+}
+
+<h2>Active campaigns</h2>
+
+@(Html.Kendo()
+      .Grid(Model)
+      .Name("grid-activecampaigns")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.StartDate);
+          columns.Bound(c => c.EndDate);
+          columns.Bound(c => c.Product);
+          columns.Bound(c => c.Price);
+          columns.Bound(c => c.Description);
+          columns.Bound(c => c.Script);
+      })
+      .Pageable(pageable => pageable
+                                    .Refresh(true)
+                                    .PageSizes(true)
+                                    .ButtonCount(5))
+      .Sortable()
+      .Filterable()
+      .DataSource(data => data.Ajax()
+                              .Read("Read", "ActiveCampaigns")
+                              .PageSize(10))
+)

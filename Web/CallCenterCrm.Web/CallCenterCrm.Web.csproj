@@ -203,7 +203,9 @@
     <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
     <Compile Include="Areas\Manage\Models\Campaign\IndexViewModel.cs" />
     <Compile Include="Areas\Manage\Models\Campaign\NewCampaignViewModel.cs" />
+    <Compile Include="Areas\Operator\Controllers\ActiveCampaignsController.cs" />
     <Compile Include="Areas\Operator\Controllers\CallResultsController.cs" />
+    <Compile Include="Areas\Operator\Models\ActiveCampaigns\IndexActiveCampaignsModel.cs" />
     <Compile Include="Areas\Operator\Models\CallResult\IndexCallResultModel.cs" />
     <Compile Include="Areas\Operator\Models\CallResult\NewCallResultModel.cs" />
     <Compile Include="Areas\Operator\OperatorAreaRegistration.cs" />
@@ -478,9 +480,9 @@
     <Content Include="Areas\Manage\Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Areas\Operator\Views\web.config" />
     <Content Include="Areas\Operator\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Operator\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Operator\Views\CallResults\Create.cshtml" />
     <Content Include="Areas\Operator\Views\CallResults\Index.cshtml" />
+    <Content Include="Areas\Operator\Views\ActiveCampaigns\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -559,6 +561,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Administration\Views\Shared\" />
+    <Folder Include="Areas\Operator\Views\Shared\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
