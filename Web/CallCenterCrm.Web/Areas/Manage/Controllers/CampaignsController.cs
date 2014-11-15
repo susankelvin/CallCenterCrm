@@ -12,17 +12,45 @@
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Manage.Models.Campaign;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+    using System.Threading;
+    using System.Globalization;
 
     [Authorize(Roles = "Admin, Manager")]
     public class CampaignsController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
 
-        // GET: Manage/Campaigns
-        public ActionResult Index()
+        public CampaignsController() : base()
         {
-            var campaigns = context.Campaigns.Include(c => c.Manager);
-            return View(campaigns.ToList());
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        }
+
+        // GET: Manage/Campaigns
+        public ActionResult Index([DataSourceRequest]DataSourceRequest request)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Read([DataSourceRequest]DataSourceRequest request)
+        {
+            string managerId = this.User.Identity.GetUserId();
+            var campaigns = this.context.Campaigns.Where(c => c.ManagerId == managerId)
+                                .Select(c => new IndexViewModel()
+                                       {
+                                           CampaignId = c.CampaignId,
+                                           Active = c.Active,
+                                           Description = c.Description,
+                                           EndDate = c.EndDate,
+                                           Price = c.Price,
+                                           Product = c.Product,
+                                           Script = c.Script,
+                                           StartDate = c.StartDate
+                                       })
+                                .ToList();
+            return Json(campaigns.ToDataSourceResult(request));
         }
 
         // GET: Manage/Campaigns/Details/5
@@ -63,7 +91,7 @@
                     Price = model.Price,
                     Product = model.Product,
                     Script = model.Script,
-                    StartDate = model.EndDate
+                    StartDate = model.StartDate
                 };
 
                 ApplicationUser user = this.context.Users.Find(campaign.ManagerId);
@@ -77,19 +105,19 @@
         }
 
         // GET: Manage/Campaigns/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? campaignid)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Campaign campaign = context.Campaigns.Find(id);
-            if (campaign == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", campaign.ManagerId);
-            return View(campaign);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Campaign campaign = context.Campaigns.Find(id);
+            //if (campaign == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", campaign.ManagerId);
+            return View();
         }
 
         // POST: Manage/Campaigns/Edit/5
@@ -97,16 +125,15 @@
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CampaignId,StartDate,EndDate,Product,Price,Description,Script,ManagerId,Active,IsDeleted,DeletedOn")]
-                                 Campaign campaign)
+        public ActionResult Edit(IndexViewModel campaign)
         {
-            if (ModelState.IsValid)
-            {
-                context.Entry(campaign).State = EntityState.Modified;
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", campaign.ManagerId);
+            //if (ModelState.IsValid)
+            //{
+            //    context.Entry(campaign).State = EntityState.Modified;
+            //    context.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
+            //ViewBag.ManagerId = new SelectList(context.Users, "Id", "Email", campaign.ManagerId);
             return View(campaign);
         }
 
@@ -127,12 +154,12 @@
 
         // POST: Manage/Campaigns/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        //[ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed([DataSourceRequest]DataSourceRequest request, IndexViewModel model)
         {
-            Campaign campaign = context.Campaigns.Find(id);
-            context.Campaigns.Remove(campaign);
-            context.SaveChanges();
+            //Campaign campaign = context.Campaigns.Find(id);
+            //context.Campaigns.Remove(campaign);
+            //context.SaveChanges();
             return RedirectToAction("Index");
         }
 
