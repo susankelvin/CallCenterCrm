@@ -203,6 +203,8 @@
     <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
     <Compile Include="Areas\Manage\Models\Campaign\IndexViewModel.cs" />
     <Compile Include="Areas\Manage\Models\Campaign\NewCampaignViewModel.cs" />
+    <Compile Include="Areas\Operator\Controllers\CallResultsController.cs" />
+    <Compile Include="Areas\Operator\OperatorAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -471,6 +473,14 @@
     <Content Include="Areas\Manage\Views\Campaigns\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Campaigns\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Areas\Operator\Views\web.config" />
+    <Content Include="Areas\Operator\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Operator\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Operator\Views\CallResults\Create.cshtml" />
+    <Content Include="Areas\Operator\Views\CallResults\Delete.cshtml" />
+    <Content Include="Areas\Operator\Views\CallResults\Details.cshtml" />
+    <Content Include="Areas\Operator\Views\CallResults\Edit.cshtml" />
+    <Content Include="Areas\Operator\Views\CallResults\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -486,6 +496,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Kendo\kendo.all.min.js" />
     <Content Include="Scripts\Kendo\kendo.aspnetmvc.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -549,6 +560,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Administration\Views\Shared\" />
+    <Folder Include="Areas\Operator\Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

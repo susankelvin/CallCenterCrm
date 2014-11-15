@@ -19,22 +19,23 @@
         //private ApplicationDbContext context = new ApplicationDbContext();
         private readonly ICallCenterCrmData data;
 
-        public CampaignsController(ICallCenterCrmData data)
-            : base()
+        public CampaignsController(ICallCenterCrmData data) : base()
         {
             this.data = data;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
         // GET: Manage/Campaigns
-        public ActionResult Index([DataSourceRequest]DataSourceRequest request)
+        public ActionResult Index([DataSourceRequest]
+                                  DataSourceRequest request)
         {
             return View();
         }
 
         // AJAX update
         [HttpPost]
-        public ActionResult Read([DataSourceRequest]DataSourceRequest request)
+        public ActionResult Read([DataSourceRequest]
+                                 DataSourceRequest request)
         {
             string managerId = this.User.Identity.GetUserId();
             var campaigns = this.data.Campaigns.All().Where(c => c.ManagerId == managerId)
@@ -107,7 +108,8 @@
 
         // POST: Manage/Campaigns/Edit/5
         [HttpPost]
-        public ActionResult Edit([DataSourceRequest]DataSourceRequest request, IndexViewModel model)
+        public ActionResult Edit([DataSourceRequest]
+                                 DataSourceRequest request, IndexViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -134,7 +136,8 @@
 
         // POST: Manage/Campaigns/Delete/5
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed([DataSourceRequest]DataSourceRequest request, IndexViewModel model)
+        public ActionResult DeleteConfirmed([DataSourceRequest]
+                                            DataSourceRequest request, IndexViewModel model)
         {
             Campaign campaign = this.data.Campaigns.Find(model.CampaignId);
             if (campaign != null)

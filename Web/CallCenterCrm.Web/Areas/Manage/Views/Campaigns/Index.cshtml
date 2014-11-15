@@ -6,7 +6,7 @@
     ViewBag.Title = "Campaigns";
 }
 
-@*<h2>Index</h2>*@
+<h2>Campaigns</h2>
 
 <p>
     @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-default" })
@@ -25,9 +25,9 @@
         columns.Bound(c => c.Script);
         columns.Bound(c => c.Active);
         columns.Command(command => { command.Edit(); command.Destroy(); });
-        columns.Bound(p => p.CampaignId).Title("")
-            .Sortable(false)
-            .ClientTemplate("<a href='" + Url.Action("Edit", "Campaigns") + "/#= CampaignId #'" + ">Edit</a>");
+        //columns.Bound(p => p.CampaignId).Title("")
+        //    .Sortable(false)
+        //    .ClientTemplate("<a href='" + Url.Action("Edit", "Campaigns") + "/#= CampaignId #'" + ">Edit</a>");
     })
     .Pageable(pageable => pageable
                               .Refresh(true)
