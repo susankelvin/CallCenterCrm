@@ -13,16 +13,22 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
+    using AutoMapper.QueryableExtensions;
 
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
+        private readonly ICallCenterCrmData data;
+
+        public UsersController(ICallCenterCrmData data)
+        {
+            this.data = data;
+        }
 
         // GET: Administration/Users
         public ActionResult Index()
         {
-            var x = context.Users.Include("Office").OrderBy(u => u.Email).Skip(2).First();
             var users = context.Users.Include("Office").Select(UserViewModel.FromUser).ToList();
             foreach (var user in users)
             {

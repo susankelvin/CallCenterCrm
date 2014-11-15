@@ -1,11 +1,9 @@
 ﻿namespace CallCenterCrm.Web.Areas.Administration.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Web;
     using CallCenterCrm.Data.Models;
 
     public class UserViewModel
@@ -36,6 +34,7 @@
         [Display(Name="Phone number")]
         public string PhoneNumber { get; set; }
 
+        [Display(Name="Office")]
         public string Office { get; set; }
 
         public string Role { get; set; }

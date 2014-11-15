@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using CallCenterCrm.Data.Models;
+    using CallCenterCrm.Web.Areas.Administration.Models;
     using CallCenterCrm.Web.Areas.Operator.Models.ActiveCampaigns;
     using CallCenterCrm.Web.Areas.Operator.Models.CallResult;
 
