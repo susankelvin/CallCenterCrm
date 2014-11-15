@@ -1,30 +1,28 @@
 ﻿namespace CallCenterCrm.Web.Areas.Manage.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Data.Entity;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
-    using System.Web;
+    using System.Threading;
     using System.Web.Mvc;
-    using Microsoft.AspNet.Identity;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Manage.Models.Campaign;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    using System.Threading;
-    using System.Globalization;
+    using Microsoft.AspNet.Identity;
 
     [Authorize(Roles = "Admin, Manager")]
     public class CampaignsController : Controller
     {
-        private ApplicationDbContext context = new ApplicationDbContext();
+        //private ApplicationDbContext context = new ApplicationDbContext();
+        private readonly ICallCenterCrmData data;
 
-        public CampaignsController()
+        public CampaignsController(ICallCenterCrmData data)
             : base()
         {
+            this.data = data;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
@@ -39,7 +37,7 @@
         public ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
             string managerId = this.User.Identity.GetUserId();
-            var campaigns = this.context.Campaigns.Where(c => c.ManagerId == managerId)
+            var campaigns = this.data.Campaigns.All().Where(c => c.ManagerId == managerId)
                                 .Select(c => new IndexViewModel()
                                        {
                                            CampaignId = c.CampaignId,
@@ -62,7 +60,8 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Campaign campaign = context.Campaigns.Find(id);
+
+            Campaign campaign = this.data.Campaigns.Find(id);
             if (campaign == null)
             {
                 return HttpNotFound();
@@ -96,10 +95,10 @@
                     StartDate = model.StartDate
                 };
 
-                ApplicationUser user = this.context.Users.Find(campaign.ManagerId);
+                ApplicationUser user = this.data.Users.Find(campaign.ManagerId);
                 campaign.OfficeId = user.OfficeId ?? 0;
-                context.Campaigns.Add(campaign);
-                context.SaveChanges();
+                this.data.Campaigns.Add(campaign);
+                this.data.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -124,11 +123,10 @@
                     Script = model.Script,
                     StartDate = model.StartDate
                 };
-                ApplicationUser user = this.context.Users.Find(campaign.ManagerId);
+                ApplicationUser user = this.data.Users.Find(campaign.ManagerId);
                 campaign.OfficeId = user.OfficeId ?? 0;
-                var entry = this.context.Entry(campaign);
-                entry.State = EntityState.Modified;
-                this.context.SaveChanges();
+                this.data.Campaigns.Update(campaign);
+                this.data.SaveChanges();
             }
 
             return Json(new[] { model }.ToDataSourceResult(request));
@@ -138,23 +136,14 @@
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed([DataSourceRequest]DataSourceRequest request, IndexViewModel model)
         {
-            Campaign campaign = context.Campaigns.Find(model.CampaignId);
+            Campaign campaign = this.data.Campaigns.Find(model.CampaignId);
             if (campaign != null)
             {
-                this.context.Campaigns.Remove(campaign);
-                this.context.SaveChanges();
+                this.data.Campaigns.Delete(campaign);
+                this.data.SaveChanges();
             }
 
             return Json(new[] { model }.ToDataSourceResult(request));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                context.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

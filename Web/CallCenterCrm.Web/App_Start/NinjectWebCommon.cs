@@ -64,6 +64,7 @@ namespace CallCenterCrm.Web.App_Start
         {
             kernel.Bind<DbContext>().To<ApplicationDbContext>();
             kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
+            kernel.Bind<ICallCenterCrmData>().To<CallCenterCrmData>();
         }        
     }
 }

@@ -27,7 +27,7 @@
             return this.DbSet.AsQueryable();
         }
 
-        public virtual T GetById(object id)
+        public virtual T Find(object id)
         {
             return this.DbSet.Find(id);
         }
@@ -72,7 +72,7 @@
 
         public virtual void Delete(int id)
         {
-            var entity = this.GetById(id);
+            var entity = this.Find(id);
 
             if (entity != null)
             {
