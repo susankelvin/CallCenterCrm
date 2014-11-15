@@ -8,6 +8,7 @@
     using System.Web.Optimization;
     using System.Web.Routing;
     using CallCenterCrm.Data;
+    using CallCenterCrm.Web.Infrastructure;
 
     public class MvcApplication : HttpApplication
     {
@@ -22,6 +23,8 @@
 
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
+
+            AutoMapperConfig.Execute();
         }
     }
 }
