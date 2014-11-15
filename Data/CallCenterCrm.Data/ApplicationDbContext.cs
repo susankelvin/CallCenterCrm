@@ -1,10 +1,10 @@
 ﻿namespace CallCenterCrm.Data
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
     using CallCenterCrm.Data.Models;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using System.Data.Entity;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

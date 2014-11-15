@@ -184,5 +184,3 @@ FakesAssemblies/
 
 # Kendo
 /Web/CallCenterCrm.Web/Kendo/Kendo.Mvc.dll
-/Web/CallCenterCrm.Web/Content/Kendo/*
-/Web/CallCenterCrm.Web/Scripts/Kendo/*

@@ -33,6 +33,7 @@
             return View();
         }
 
+        // AJAX update
         [HttpPost]
         public ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
