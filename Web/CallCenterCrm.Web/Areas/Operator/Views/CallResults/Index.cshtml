@@ -1,81 +1,40 @@
-﻿@model IEnumerable<CallCenterCrm.Data.Models.CallResult>
+﻿@using CallCenterCrm.Web.Areas.Operator.Models.CallResult
+
+@model IEnumerable<IndexCallResultModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Call results</h2>
 
 <p>
     @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-default" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Campaign.Product)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Operator.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CallDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duration)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Notes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Customer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletedOn)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Campaign.Product)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Operator.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CallDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Duration)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Notes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Customer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsDeleted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeletedOn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CallResultId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CallResultId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CallResultId })
-        </td>
-    </tr>
-}
-
-</table>
+@(Html.Kendo()
+      .Grid(Model)
+      .Name("grid-callresults")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.CampaignDescription);
+          columns.Bound(c => c.CallDate);
+          columns.Bound(c => c.StatusDescription);
+          columns.Bound(c => c.Duration);
+          columns.Bound(c => c.Notes);
+          columns.Bound(c => c.Customer);
+      })
+      .Pageable(pageable => pageable
+                                    .Refresh(true)
+                                    .PageSizes(true)
+                                    .ButtonCount(5))
+      .Sortable()
+      .DataSource(data => data.Ajax()
+                              .Read("Read", "CallResults")
+                              .PageSize(10)
+                              .Model(model =>
+                              {
+                                  model.Id(p => p.CallResultId);
+                                  model.Field(p => p.CallResultId).Editable(false);
+                              }))
+)

@@ -20,9 +20,6 @@
         public IEnumerable<SelectListItem> Statuses { get; set; }
 
         [Required]
-        public DateTime CallDate { get; set; }
-
-        [Required]
         public int Duration { get; set; }
 
         public string Notes { get; set; }

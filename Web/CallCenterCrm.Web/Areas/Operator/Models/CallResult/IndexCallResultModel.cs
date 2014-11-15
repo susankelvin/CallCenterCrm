@@ -1,13 +1,9 @@
 ﻿namespace CallCenterCrm.Web.Areas.Operator.Models.CallResult
 {
-    using CallCenterCrm.Data.Models;
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
-
 
     public class IndexCallResultModel
     {
@@ -16,15 +12,16 @@
         public int CallResultId { get; set; }
 
         [Required]
+        [Display(Name = "Campaign")]
         public string CampaignDescription { get; set; }
 
         [Required]
-        public string OperatorUserName { get; set; }
+        [Display(Name = "Status")]
+        public string StatusDescription { get; set; }
 
         [Required]
-        public Status StatusDescription { get; set; }
-
-        [Required]
+        [Display(Name = "Date")]
+        [DisplayFormat(DataFormatString="{0:g}")]
         public DateTime CallDate { get; set; }
 
         [Required]

@@ -15,7 +15,6 @@
 
         public virtual Campaign Campaign { get; set; }
 
-        [Required]
         public string OperatorId { get; set; }
 
         public virtual ApplicationUser Operator { get; set; }
