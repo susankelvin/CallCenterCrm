@@ -11,25 +11,27 @@
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Administration.Models.Office;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     [Authorize(Roles = "Admin")]
     public class OfficesController : Controller
     {
-        private ApplicationDbContext context = new ApplicationDbContext();
+        private const int PAGE_SIZE = 10;
+        private readonly ApplicationDbContext context = new ApplicationDbContext();
 
         // GET: Administration/Offices
         public ActionResult Index()
         {
-            var offices = context.Offices.Include(o => o.Manager).Select(o => new IndexOfficeViewModel()
-            {
-                Address = o.Address,
-                Email = o.Email,
-                ManagerName = o.Manager.UserName,
-                Name = o.Name,
-                OfficeId = o.OfficeId,
-                PhoneNumber = o.PhoneNumber
-            });
+            var offices = this.FilterOffices("", 0);
             return View(offices.ToList());
+        }
+
+        // Ajax update
+        public ActionResult Update(string tbSearch, int? pageIndex)
+        {
+            var result = FilterOffices(tbSearch, pageIndex);
+            return PartialView("_OfficesTable", result);
         }
 
         // GET: Administration/Offices/Create
@@ -57,14 +59,8 @@
                     this.RedirectToAction("Index");
                 }
 
-                Office office = new Office()
-                {
-                    Address = model.Address,
-                    Email = model.Email,
-                    Name = model.Name,
-                    PhoneNumber = model.PhoneNumber,
-                    ManagerId = model.ManagerId
-                };
+                Office office = new Office();
+                Mapper.Map(model, office);
                 context.Offices.Add(office);
                 context.SaveChanges();
                 return RedirectToAction("Index");
@@ -80,23 +76,16 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Office office = context.Offices.Find(id);
             if (office == null)
             {
                 return HttpNotFound();
             }
 
-            EditOfficeViewModel model = new EditOfficeViewModel()
-            {
-                OfficeId = office.OfficeId,
-                Address = office.Address,
-                Email = office.Email,
-                Name = office.Name,
-                PhoneNumber = office.PhoneNumber,
-                //ManagerId = office.Manager.Id,
-                Managers = this.GetManagers()
-            };
-
+            EditOfficeViewModel model = new EditOfficeViewModel();
+            Mapper.Map(office, model);
+            model.Managers = this.GetManagers();
             return View(model);
         }
 
@@ -116,10 +105,7 @@
                     this.RedirectToAction("Index");
                 }
 
-                office.Address = model.Address;
-                office.Email = model.Email;
-                office.ManagerId = model.ManagerId;
-                office.PhoneNumber = model.PhoneNumber;
+                Mapper.Map(model, office);
                 context.Entry(office).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");
@@ -141,7 +127,7 @@
             }
             else
             {
-                this.TempData["ErrorMessage"] = "Invalid message id";
+                this.TempData["ErrorMessage"] = "Invalid office id";
             }
 
             return RedirectToAction("Index");
@@ -161,12 +147,48 @@
             string roleManagerId = this.context.Roles.Where(r => r.Name == "Manager").First().Id;
             List<SelectListItem> managers = this.context.Users.Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
                                                 .Select(u => new SelectListItem()
-                                                {
-                                                    Text = u.UserName,
-                                                    Value = u.Id
-                                                })
+                                                       {
+                                                           Text = u.UserName,
+                                                           Value = u.Id
+                                                       })
                                                 .ToList();
             return managers;
+        }
+
+        private IEnumerable<IndexOfficeViewModel> FilterOffices(string tbSearch, int? pageIndex)
+        {
+            string search = tbSearch.ToLower();
+            var offices = context.Offices
+                              .Include(o => o.Manager)
+                              .Where(o => o.Name.Contains(search) || o.Manager.UserName.Contains(search));
+
+            if ((pageIndex == null) || (pageIndex < 0))
+            {
+                pageIndex = 0;
+            }
+
+            if (pageIndex > 0)
+            {
+                int officesCount = offices.Count();
+                int maxPage = officesCount / PAGE_SIZE;
+                if (officesCount > (maxPage + 1) * PAGE_SIZE)
+                {
+                    maxPage++;
+                }
+
+                if (pageIndex > maxPage)
+                {
+                    pageIndex = maxPage;
+                }
+            }
+
+            offices = offices.OrderBy(o => o.OfficeId)
+                          .Skip((int)pageIndex * PAGE_SIZE)
+                          .Take(PAGE_SIZE);
+            var result = offices.Project()
+                             .To<IndexOfficeViewModel>()
+                             .ToList();
+            return result;
         }
     }
 }

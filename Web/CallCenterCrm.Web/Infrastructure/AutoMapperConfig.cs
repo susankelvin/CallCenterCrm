@@ -2,7 +2,7 @@
 {
     using AutoMapper;
     using CallCenterCrm.Data.Models;
-    using CallCenterCrm.Web.Areas.Administration.Models;
+    using CallCenterCrm.Web.Areas.Administration.Models.Office;
     using CallCenterCrm.Web.Areas.Operator.Models.ActiveCampaigns;
     using CallCenterCrm.Web.Areas.Operator.Models.CallResult;
 
@@ -19,6 +19,14 @@
             // Active campaigns
             Mapper.CreateMap(typeof(Campaign), typeof(IndexActiveCampaignsModel));
             Mapper.CreateMap(typeof(IndexActiveCampaignsModel), typeof(Campaign));
+
+            // Offices
+            Mapper.CreateMap(typeof(Office), typeof(IndexOfficeViewModel));
+            Mapper.CreateMap(typeof(IndexOfficeViewModel), typeof(Office));
+            Mapper.CreateMap(typeof(Office), typeof(NewOfficeViewModel));
+            Mapper.CreateMap(typeof(NewOfficeViewModel), typeof(Office));
+            Mapper.CreateMap(typeof(Office), typeof(EditOfficeViewModel));
+            Mapper.CreateMap(typeof(EditOfficeViewModel), typeof(Office));
         }
     }
 }

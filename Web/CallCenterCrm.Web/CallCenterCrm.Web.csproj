@@ -483,6 +483,8 @@
     <Content Include="Areas\Operator\Views\CallResults\Create.cshtml" />
     <Content Include="Areas\Operator\Views\CallResults\Index.cshtml" />
     <Content Include="Areas\Operator\Views\ActiveCampaigns\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_UsersTable.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_OfficesTable.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -560,7 +562,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Administration\Views\Shared\" />
     <Folder Include="Areas\Operator\Views\Shared\" />
   </ItemGroup>
   <PropertyGroup>

@@ -7,6 +7,6 @@
     {
         [Required]
         [Display(Name = "Manager")]
-        public string ManagerName { get; set; }
+        public string ManagerUserName { get; set; }
     }
 }

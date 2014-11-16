@@ -9,57 +9,35 @@
 <p>
     @Html.ActionLink("Add", "Create", null, new { @class = "btn btn-default" } )
 </p>
-<table class="table table-bordered table-striped">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ManagerName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            Actions
-        </th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ManagerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.OfficeId }, new { @class = "btn btn-sm btn-success" }) 
-                <button class="btn btn-sm btn-danger btnDelete" data-toggle="modal" data-target="#modalConfirmDelete"
-                        data-id="@item.OfficeId">
-                    Delete
-                </button>
-            </td>
-        </tr>
-    }
+@using (@Ajax.BeginForm("Update", new AjaxOptions()
+{
+    HttpMethod = "Get",
+    UpdateTargetId = "offices-table",
+    InsertionMode = InsertionMode.Replace
+}))
+{
+    <div class="row">
+        <div class="col-md-6">
+            @Html.TextBox("tbSearch", "", new { @class = "form-control", placeholder = "Search in office name and manager" })
+        </div>
+        <div class="col-md-2">
+            <button id="btnUpdate" type="submit" class="btn btn-default">Search</button>
+        </div>
+        <input id="tbPageIndex" type="hidden" name="pageIndex" value="0" />
+        @Html.Hidden("pageCount", Model.Count() / 10 + 1, new { id = "tbPageCount" })
+    </div>
+    <br />
+}
 
-</table>
+<div id="offices-table">
+    @Html.Partial("_OfficesTable", Model)
+</div>
+
+<div class="row">
+    <button id="btnPrevious" type="button" class="btn btn-sm btn-link">Previous</button>
+    <button id="btnNext" type="button" class="btn btn-sm btn-link">Next</button>
+</div>
 
 <!-- Modal -->
 <div class="modal" id="modalConfirmDelete" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -84,13 +62,45 @@
     </div>
 </div>
 
+@Scripts.Render("~/bundles/jqueryajax")
+
 @section scripts {
     <script>
         $(document).ready(function () {
             $(".btnDelete").on("click", function () {
                 var id = $(this).data("id");
                 $("#deleteId").val(id);
-            })
+            });
+            $("#btnPrevious").on("click", function () {
+                var page = +$("#tbPageIndex").val();
+                if (page > 0) {
+                    page--;
+                }
+                else {
+                    page = 0;
+                }
+
+                $("#tbPageIndex").val(page);
+                $("#btnUpdate").click();
+            });
+            $("#btnNext").on("click", function () {
+                var page = +$("#tbPageIndex").val();
+                if (isFinite(page)) {
+                    var pageCount = +$("#tbPageCount").val();
+                    if (page < pageCount) {
+                        page++;
+                    }
+                    else {
+                        page = pageCount;
+                    }
+                }
+                else {
+                    page = +$("#tbPageCount").val();
+                }
+
+                $("#tbPageIndex").val(page);
+                $("#btnUpdate").click();
+            });
         });
     </script>
 }

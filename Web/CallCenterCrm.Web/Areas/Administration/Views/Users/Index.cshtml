@@ -9,62 +9,45 @@
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
 </p>
-<table class="table table-bordered table-striped">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Office)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Role)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Office)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-success" }) 
-                <button class="btn btn-sm btn-danger btnDelete" data-toggle="modal" data-target="#modalConfirmDelete"
-                        data-id="@item.Id">
-                    Delete
-                </button>
-            </td>
-        </tr>
-    }
+@using (@Ajax.BeginForm("Update", new AjaxOptions()
+{
+    HttpMethod = "Get",
+    UpdateTargetId = "users-table",
+    InsertionMode = InsertionMode.Replace
+}))
+{
+    <div class="row">
+        <div class="col-md-6">
+            @Html.TextBox("tbSearch", "", new { @class = "form-control", placeholder = "Search in username and email" })
+        </div>
+        <div class="col-md-2">
+            <button id="btnUpdate" type="submit" class="btn btn-default">Search</button>
+            @*<input id="btnUpdate" type="submit" value="Search" />*@
+        </div>
+        <input id="tbPageIndex" type="hidden" name="pageIndex" value="0" />
+        @Html.Hidden("pageCount", Model.Count() / 10 + 1, new { id = "tbPageCount" })
+    </div>
+    <br />
+}
 
-</table>
+<div id="users-table">
+    @Html.Partial("_UsersTable", Model)
+</div>
+
+<div class="row">
+    <button id="btnPrevious" type="button" class="btn btn-sm btn-link">Previous</button>
+    <button id="btnNext" type="button" class="btn btn-sm btn-link">Next</button>
+</div>
 
 <!-- Modal -->
 <div class="modal" id="modalConfirmDelete" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
                 <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
             </div>
             <div class="modal-body">
@@ -82,13 +65,45 @@
     </div>
 </div>
 
+@Scripts.Render("~/bundles/jqueryajax")
+
 @section scripts {
     <script>
         $(document).ready(function () {
             $(".btnDelete").on("click", function () {
                 var id = $(this).data("id");
                 $("#deleteId").val(id);
-            })
+            });
+            $("#btnPrevious").on("click", function () {
+                var page = +$("#tbPageIndex").val();
+                if (page > 0) {
+                    page--;
+                }
+                else {
+                    page = 0;
+                }
+
+                $("#tbPageIndex").val(page);
+                $("#btnUpdate").click();
+            });
+            $("#btnNext").on("click", function () {
+                var page = +$("#tbPageIndex").val();
+                if (isFinite(page)) {
+                    var pageCount = +$("#tbPageCount").val();
+                    if (page < pageCount) {
+                        page++;
+                    }
+                    else {
+                        page = pageCount;
+                    }
+                }
+                else {
+                    page = +$("#tbPageCount").val();
+                }
+
+                $("#tbPageIndex").val(page);
+                $("#btnUpdate").click();
+            });
         });
     </script>
 }
