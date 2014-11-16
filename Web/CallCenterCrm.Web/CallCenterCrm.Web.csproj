@@ -200,6 +200,7 @@
     <Compile Include="Areas\Administration\Models\User\UserViewModel.cs" />
     <Compile Include="Areas\Administration\Controllers\OfficesController.cs" />
     <Compile Include="Areas\Manager\Controllers\CampaignsController.cs" />
+    <Compile Include="Areas\Manager\Controllers\StatisticsController.cs" />
     <Compile Include="Areas\Manager\ManageAreaRegistration.cs" />
     <Compile Include="Areas\Manager\Models\Campaign\IndexViewModel.cs" />
     <Compile Include="Areas\Manager\Models\Campaign\NewCampaignViewModel.cs" />
@@ -485,6 +486,11 @@
     <Content Include="Areas\Operator\Views\ActiveCampaigns\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_UsersTable.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_OfficesTable.cshtml" />
+    <Content Include="Areas\Manager\Views\Statistics\Create.cshtml" />
+    <Content Include="Areas\Manager\Views\Statistics\Delete.cshtml" />
+    <Content Include="Areas\Manager\Views\Statistics\Details.cshtml" />
+    <Content Include="Areas\Manager\Views\Statistics\Edit.cshtml" />
+    <Content Include="Areas\Manager\Views\Statistics\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
