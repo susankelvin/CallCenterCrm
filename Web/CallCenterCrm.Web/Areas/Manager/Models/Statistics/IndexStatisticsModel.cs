@@ -13,5 +13,7 @@
         public int CampaingId { get; set; }
 
         public IEnumerable<SelectListItem> Campaigns { get; set; }
+
+        public IEnumerable<OperatorStatisticsModel> OperatorsStatistics { get; set; }
     }
 }

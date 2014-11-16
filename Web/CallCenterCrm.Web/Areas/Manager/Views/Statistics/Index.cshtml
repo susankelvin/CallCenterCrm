@@ -41,13 +41,16 @@
 <hr />
 <h4 class="text-center">Operators statistics</h4>
 
-@(Html.Kendo().Grid(Model.CampaignStatistics)
-    .Name("grid-campaigns")
+@(Html.Kendo().Grid(Model.OperatorsStatistics)
+    .Name("grid-operators")
     .Columns(columns =>
     {
-        columns.Bound(c => c.SoldToTotalCalls);
-        columns.Bound(c => c.SoldToTotalTime);
-        columns.Bound(c => c.TotelSoldPriceToTotalTime);
-        columns.Bound(c => c.NotAnsweredToTotalCalls);
+    columns.Bound(c => c.Name);
+        columns.Bound(c => c.SoldToTotalTimeAll);
+        columns.Bound(c => c.SoldToTotalTimeCampaign);
+        columns.Bound(c => c.AverageDuration);
     })
+    .Pageable()
+    .Sortable()
+    .Filterable()
 )
