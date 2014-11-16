@@ -2,23 +2,26 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
-    using System.Web;
     using System.Web.Mvc;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Administration.Models.Office;
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
 
     [Authorize(Roles = "Admin")]
     public class OfficesController : Controller
     {
         private const int PAGE_SIZE = 10;
-        private readonly ApplicationDbContext context = new ApplicationDbContext();
+        private readonly ICallCenterCrmData data;
+
+        public OfficesController(ICallCenterCrmData data)
+        {
+            this.data = data;
+        }
 
         // GET: Administration/Offices
         public ActionResult Index()
@@ -52,7 +55,7 @@
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser manager = this.context.Users.Find(model.ManagerId);
+                ApplicationUser manager = this.data.Users.Find(model.ManagerId);
                 if (manager == null)
                 {
                     this.TempData["ErrorMessage"] = "Invalid manager";
@@ -61,8 +64,8 @@
 
                 Office office = new Office();
                 Mapper.Map(model, office);
-                context.Offices.Add(office);
-                context.SaveChanges();
+                this.data.Offices.Add(office);
+                this.data.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -77,7 +80,7 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Office office = context.Offices.Find(id);
+            Office office = this.data.Offices.Find(id);
             if (office == null)
             {
                 return HttpNotFound();
@@ -98,7 +101,7 @@
         {
             if (ModelState.IsValid)
             {
-                Office office = this.context.Offices.Find(model.OfficeId);
+                Office office = this.data.Offices.Find(model.OfficeId);
                 if (office == null)
                 {
                     this.TempData["ErrorMessage"] = "Invalid office id";
@@ -106,8 +109,8 @@
                 }
 
                 Mapper.Map(model, office);
-                context.Entry(office).State = EntityState.Modified;
-                context.SaveChanges();
+                this.data.Offices.Update(office);
+                this.data.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -119,11 +122,11 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Office office = context.Offices.Find(id);
+            Office office = this.data.Offices.Find(id);
             if (office != null)
             {
-                context.Offices.Remove(office);
-                context.SaveChanges();
+                this.data.Offices.Delete(office);
+                this.data.SaveChanges();
             }
             else
             {
@@ -133,19 +136,11 @@
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                context.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         private IEnumerable<SelectListItem> GetManagers()
         {
-            string roleManagerId = this.context.Roles.Where(r => r.Name == "Manager").First().Id;
-            List<SelectListItem> managers = this.context.Users.Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
+            string roleManagerId = this.data.Context.Roles.Where(r => r.Name == "Manager").First().Id;
+            List<SelectListItem> managers = this.data.Users.All()
+                                                .Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
                                                 .Select(u => new SelectListItem()
                                                        {
                                                            Text = u.UserName,
@@ -158,7 +153,7 @@
         private IEnumerable<IndexOfficeViewModel> FilterOffices(string tbSearch, int? pageIndex)
         {
             string search = tbSearch.ToLower();
-            var offices = context.Offices
+            var offices = this.data.Offices.All()
                               .Include(o => o.Manager)
                               .Where(o => o.Name.Contains(search) || o.Manager.UserName.Contains(search));
 
