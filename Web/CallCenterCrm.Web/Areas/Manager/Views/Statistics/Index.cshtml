@@ -1,45 +1,53 @@
-﻿@model IEnumerable<CallCenterCrm.Data.Models.Status>
+﻿@using CallCenterCrm.Web.Areas.Manager.Models.Statistics
+@model IndexStatisticsModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Statistics";
 }
 
-<h2>Index</h2>
+<h2>Statistics</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @using (@Html.BeginForm("Index", "", FormMethod.Get, new { @class="form-horizontal" }))
+    {
+        <div class="row">
+            <div class="form-group">
+                @Html.LabelFor(c => c.CampaingId, new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(c => c.CampaingId, Model.Campaigns, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Load</button>
+                </div>
+            </div>
+        </div>
+    }
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletedOn)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsDeleted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeletedOn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.StatusId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.StatusId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.StatusId })
-        </td>
-    </tr>
-}
+<h4 class="text-center">Campaign statistics</h4>
 
-</table>
+@(Html.Kendo().Grid(Model.CampaignStatistics)
+    .Name("grid-campaigns")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.SoldToTotalCalls);
+        columns.Bound(c => c.SoldToTotalTime);
+        columns.Bound(c => c.TotelSoldPriceToTotalTime);
+        columns.Bound(c => c.NotAnsweredToTotalCalls);
+    })
+)
+
+<br />
+<hr />
+<h4 class="text-center">Operators statistics</h4>
+
+@(Html.Kendo().Grid(Model.CampaignStatistics)
+    .Name("grid-campaigns")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.SoldToTotalCalls);
+        columns.Bound(c => c.SoldToTotalTime);
+        columns.Bound(c => c.TotelSoldPriceToTotalTime);
+        columns.Bound(c => c.NotAnsweredToTotalCalls);
+    })
+)
