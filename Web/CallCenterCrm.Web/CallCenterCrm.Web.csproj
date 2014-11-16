@@ -568,6 +568,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Manager\Models\Statistics\" />
     <Folder Include="Areas\Operator\Views\Shared\" />
   </ItemGroup>
   <PropertyGroup>

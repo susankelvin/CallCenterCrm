@@ -1,4 +1,4 @@
-﻿namespace CallCenterCrm.Web.Areas.Manager.Controllers
+﻿namespace CallCenterCrm.Web.Areas.Manage.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +14,12 @@
     public class StatisticsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ICallCenterCrmData data;
+
+        public StatisticsController(ICallCenterCrmData data)
+        {
+            this.data = data;
+        }
 
         // GET: Manager/Status
         public ActionResult Index()
