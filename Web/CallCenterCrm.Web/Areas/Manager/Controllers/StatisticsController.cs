@@ -2,16 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Data.Entity;
     using System.Linq;
-    using System.Net;
-    using System.Web;
     using System.Web.Mvc;
     using CallCenterCrm.Data;
-    using CallCenterCrm.Web.Areas.Manager.Models.Statistics;
     using CallCenterCrm.Data.Models;
-    using Microsoft.AspNet.Identity.EntityFramework;
+    using CallCenterCrm.Web.Areas.Manager.Models.Statistics;
 
     public class StatisticsController : Controller
     {

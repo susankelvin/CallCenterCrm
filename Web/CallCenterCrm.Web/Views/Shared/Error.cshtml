@@ -1,9 +1,13 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
 
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
     ViewBag.Title = "Error";
 }
 
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
-
+<h2 class="text-info">You may contact administrator <a href="mailto:admin@bdv.net">Email</a></h2>
