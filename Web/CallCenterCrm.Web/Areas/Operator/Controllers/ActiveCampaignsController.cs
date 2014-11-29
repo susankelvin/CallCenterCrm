@@ -34,7 +34,7 @@
             ApplicationUser user = this.data.Users.Find(operatorId);
             int officeId = user.OfficeId ?? 0;
             var campaigns = this.data.Campaigns.All()
-                                  .Where(c => c.OfficeId == officeId)
+                                  .Where(c => c.OfficeId == officeId && c.Active)
                                   .Project()
                                   .To<IndexActiveCampaignsModel>()
                                   .ToList();

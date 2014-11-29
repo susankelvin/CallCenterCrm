@@ -9,7 +9,7 @@
     {
         public int CallResultId { get; set; }
 
-        [Display(Name="Campaign")]
+        [Display(Name = "Campaign")]
         public int CampaignId { get; set; }
 
         public IEnumerable<SelectListItem> Campaigns { get; set; }
@@ -22,8 +22,10 @@
         [Required]
         public int Duration { get; set; }
 
+        [AllowHtml]
         public string Notes { get; set; }
 
+        [AllowHtml]
         [Required]
         public string Customer { get; set; }
     }

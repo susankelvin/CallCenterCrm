@@ -18,7 +18,8 @@
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
-        private ApplicationDbContext context = new ApplicationDbContext();
+        private const int PAGE_SIZE = 10;
+        private readonly ApplicationDbContext context = new ApplicationDbContext();
         private readonly ICallCenterCrmData data;
 
         public UsersController(ICallCenterCrmData data)
@@ -29,16 +30,17 @@
         // GET: Administration/Users
         public ActionResult Index()
         {
-            var users = context.Users.Include("Office").Select(UserViewModel.FromUser).ToList();
-            foreach (var user in users)
-            {
-                IdentityRole role = context.Roles.Find(user.Role);
-                user.Role = role != null ? role.Name : "";
-            }
-           
+            var users = this.FilterUsers("", 0);
             return View(users);
         }
 
+        // Ajax update
+        public ActionResult Update(string tbSearch, int? pageIndex)
+        {
+            var result = FilterUsers(tbSearch, pageIndex);
+            return PartialView("_UsersTable", result);
+        }
+        
         // GET: Administration/Users/Create
         public ActionResult Create()
         {
@@ -161,6 +163,47 @@
                 context.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private IEnumerable<UserViewModel> FilterUsers(string tbSearch, int? pageIndex)
+        {
+            string search = tbSearch.ToLower();
+            var users = context.Users.Include("Office")
+                .Where(u => u.UserName.Contains(search) || u.Email.Contains(search));
+
+            if ((pageIndex == null) || (pageIndex < 0))
+            {
+                pageIndex = 0;
+            }
+
+            if (pageIndex > 0)
+            {
+                int usersCount = users.Count();
+                int maxPage = usersCount / PAGE_SIZE;
+                if (usersCount > (maxPage + 1) * PAGE_SIZE)
+                {
+                    maxPage++;
+                }
+
+                if (pageIndex > maxPage)
+                {
+                    pageIndex = maxPage;
+                }
+            }
+
+            users = users.OrderBy(u => u.Id)
+                .Skip((int)pageIndex * PAGE_SIZE)
+                .Take(PAGE_SIZE);
+
+            var result = users.Select(UserViewModel.FromUser)
+                .ToList();
+            foreach (var user in result)
+            {
+                IdentityRole role = context.Roles.Find(user.Role);
+                user.Role = role != null ? role.Name : "";
+            }
+
+            return result;
         }
     }
 }
