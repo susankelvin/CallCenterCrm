@@ -1,0 +1,48 @@
+﻿@using CallCenterCrm.Web.Areas.Manage.Models.Campaign
+
+@model IEnumerable<IndexViewModel>
+
+@{
+    ViewBag.Title = "Campaigns";
+}
+
+<h2>Campaigns</h2>
+
+<p>
+    @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-default" })
+</p>
+
+@(Html.Kendo().Grid(Model)
+    .Name("grid-campaigns")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.StartDate).ClientTemplate("#=kendo.toString(StartDate, 'd')#");
+        //columns.Bound(c => c.EndDate).ClientTemplate("#=kendo.toString(EndDate, 'D')#");
+        columns.Bound(c => c.EndDate).Format("{0:d}");
+        columns.Bound(c => c.Description);
+        columns.Bound(c => c.Product);
+        columns.Bound(c => c.Price);
+        columns.Bound(c => c.Script);
+        columns.Bound(c => c.Active);
+        columns.Command(command => { command.Edit(); command.Destroy(); });
+        //columns.Bound(p => p.CampaignId).Title("")
+        //    .Sortable(false)
+        //    .ClientTemplate("<a href='" + Url.Action("Edit", "Campaigns") + "/#= CampaignId #'" + ">Edit</a>");
+    })
+    .Pageable(pageable => pageable
+                              .Refresh(true)
+                              .PageSizes(true)
+                              .ButtonCount(5))
+    .Sortable()
+    .Editable(e => e.Mode(GridEditMode.PopUp))
+    .DataSource(data => data.Ajax()
+                            .Read("Read", "Campaigns")
+                            .PageSize(10)
+                            .Model(model =>
+                            {
+                                model.Id(p => p.CampaignId);
+                                model.Field(p => p.CampaignId).Editable(false);
+                            })
+                            .Update("Edit", "Campaigns")
+                            .Destroy("Delete", "Campaigns"))
+)
