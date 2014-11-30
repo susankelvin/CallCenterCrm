@@ -15,7 +15,7 @@
     [Authorize(Roles = "Admin")]
     public class OfficesController : Controller
     {
-        private const int PAGE_SIZE = 1;
+        private const int PAGE_SIZE = 10;
         private readonly ICallCenterCrmData data;
 
         public OfficesController(ICallCenterCrmData data)

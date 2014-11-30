@@ -18,7 +18,7 @@
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
-        private const int PAGE_SIZE = 2;
+        private const int PAGE_SIZE = 10;
         private readonly ApplicationDbContext context = new ApplicationDbContext();
         private readonly ICallCenterCrmData data;
 

@@ -1,8 +1,5 @@
 ﻿namespace CallCenterCrm.Web.Areas.Operator.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Web.Mvc;
     using AutoMapper.QueryableExtensions;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
@@ -10,6 +7,8 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using Microsoft.AspNet.Identity;
+    using System.Linq;
+    using System.Web.Mvc;
 
     public class ActiveCampaignsController : Controller
     {

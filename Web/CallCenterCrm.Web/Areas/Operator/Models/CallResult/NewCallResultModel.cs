@@ -20,6 +20,7 @@
         public IEnumerable<SelectListItem> Statuses { get; set; }
 
         [Required]
+        [Range(1, 250)]
         public int Duration { get; set; }
 
         [AllowHtml]

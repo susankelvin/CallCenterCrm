@@ -4,9 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/kendo")
-    @Styles.Render("~/Content/bootstrap")
     @RenderSection("styles", false)
+    @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/site")
     @Scripts.Render("~/bundles/jquery")
 </head>
@@ -80,8 +79,7 @@
         </footer>
     </div>
 
+    @RenderSection("scripts", false)
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/kendo")
-    @RenderSection("scripts", required: false)
 </body>
 </html>

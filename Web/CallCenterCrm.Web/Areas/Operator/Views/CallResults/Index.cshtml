@@ -6,6 +6,10 @@
     ViewBag.Title = "Index";
 }
 
+@section styles {
+    @Styles.Render("~/Content/kendo")
+}
+
 <h2>Call results</h2>
 
 <p>
@@ -24,8 +28,7 @@
           columns.Bound(c => c.Notes);
           columns.Bound(c => c.Customer);
       })
-      .Pageable(pageable => pageable
-                                    .Refresh(true)
+      .Pageable(pageable => pageable.Refresh(true)
                                     .PageSizes(true)
                                     .ButtonCount(5))
       .Sortable()
@@ -39,3 +42,7 @@
                                   model.Field(p => p.CallResultId).Editable(false);
                               }))
 )
+
+@section scripts {
+    @Scripts.Render("~/bundles/kendo")
+}

@@ -6,6 +6,10 @@
     ViewBag.Title = "Active campaigns";
 }
 
+@section styles {
+    @Styles.Render("~/Content/kendo")
+}
+
 <h2>Active campaigns</h2>
 
 @(Html.Kendo()
@@ -30,3 +34,7 @@
                               .Read("Read", "ActiveCampaigns")
                               .PageSize(10))
 )
+
+@section scripts {
+    @Scripts.Render("~/bundles/kendo")
+}
