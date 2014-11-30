@@ -200,6 +200,7 @@
     <Compile Include="Areas\Administration\Models\Office\OfficeViewModel.cs" />
     <Compile Include="Areas\Administration\Models\User\EditUserViewModel.cs" />
     <Compile Include="Areas\Administration\Models\Office\NewOfficeViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\User\IndexViewModel.cs" />
     <Compile Include="Areas\Administration\Models\User\UserViewModel.cs" />
     <Compile Include="Areas\Administration\Controllers\OfficesController.cs" />
     <Compile Include="Areas\Manager\Controllers\CampaignsController.cs" />
@@ -491,8 +492,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Areas\Administration\Views\Shared\_UsersTable.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\_OfficesTable.cshtml" />
+    <Content Include="Areas\Administration\Views\Users\_UsersTable.cshtml" />
+    <Content Include="Areas\Administration\Views\Offices\_OfficesTable.cshtml" />
     <Content Include="Areas\Manager\Views\Statistics\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />

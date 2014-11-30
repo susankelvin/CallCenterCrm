@@ -18,7 +18,7 @@
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
-        private const int PAGE_SIZE = 10;
+        private const int PAGE_SIZE = 2;
         private readonly ApplicationDbContext context = new ApplicationDbContext();
         private readonly ICallCenterCrmData data;
 
@@ -40,7 +40,7 @@
             var result = FilterUsers(tbSearch, pageIndex);
             return PartialView("_UsersTable", result);
         }
-        
+
         // GET: Administration/Users/Create
         public ActionResult Create()
         {
@@ -165,44 +165,47 @@
             base.Dispose(disposing);
         }
 
-        private IEnumerable<UserViewModel> FilterUsers(string tbSearch, int? pageIndex)
+        private IndexViewModel FilterUsers(string tbSearch, int? pageIndex)
         {
             string search = tbSearch.ToLower();
             var users = context.Users.Include("Office")
                 .Where(u => u.UserName.Contains(search) || u.Email.Contains(search));
+
+            int usersCount = users.Count();
+            int pageCount = usersCount / PAGE_SIZE;
+            if (usersCount % PAGE_SIZE != 0)
+            {
+                pageCount++;
+            }
 
             if ((pageIndex == null) || (pageIndex < 0))
             {
                 pageIndex = 0;
             }
 
-            if (pageIndex > 0)
+            if ((pageIndex > 0) && (pageIndex >= pageCount))
             {
-                int usersCount = users.Count();
-                int maxPage = usersCount / PAGE_SIZE;
-                if (usersCount > (maxPage + 1) * PAGE_SIZE)
-                {
-                    maxPage++;
-                }
-
-                if (pageIndex > maxPage)
-                {
-                    pageIndex = maxPage;
-                }
+                pageIndex = pageCount - 1;
             }
 
             users = users.OrderBy(u => u.Id)
                 .Skip((int)pageIndex * PAGE_SIZE)
                 .Take(PAGE_SIZE);
 
-            var result = users.Select(UserViewModel.FromUser)
+            var usersList = users.Select(UserViewModel.FromUser)
                 .ToList();
-            foreach (var user in result)
+            foreach (var user in usersList)
             {
                 IdentityRole role = context.Roles.Find(user.Role);
                 user.Role = role != null ? role.Name : "";
             }
 
+            IndexViewModel result = new IndexViewModel()
+            {
+                ActivePage = pageIndex ?? 0,
+                PageCount = pageCount,
+                Users = usersList
+            };
             return result;
         }
     }
