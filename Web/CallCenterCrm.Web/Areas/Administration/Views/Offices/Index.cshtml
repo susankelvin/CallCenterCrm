@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CallCenterCrm.Web.Areas.Administration.Models.Office.IndexOfficeViewModel>
+﻿@model CallCenterCrm.Web.Areas.Administration.Models.Office.IndexViewModel
 
 @{
     ViewBag.Title = "Offices";
@@ -7,7 +7,7 @@
 <h2>Offices</h2>
 
 <p>
-    @Html.ActionLink("Add", "Create", null, new { @class = "btn btn-default" } )
+    @Html.ActionLink("Add", "Create", null, new { @class = "btn btn-default" })
 </p>
 
 @using (@Ajax.BeginForm("Update", new AjaxOptions()
@@ -19,24 +19,18 @@
 {
     <div class="row">
         <div class="col-md-6">
-            @Html.TextBox("tbSearch", "", new { @class = "form-control", placeholder = "Search in office name and manager" })
+            @Html.TextBox("tbSearch", "", new { @class = "form-control", placeholder = "Search in office and manager name" })
         </div>
         <div class="col-md-2">
             <button id="btnUpdate" type="submit" class="btn btn-default">Search</button>
         </div>
         <input id="tbPageIndex" type="hidden" name="pageIndex" value="0" />
-        @Html.Hidden("pageCount", Model.Count() / 10 + 1, new { id = "tbPageCount" })
     </div>
     <br />
 }
 
 <div id="offices-table">
     @Html.Partial("_OfficesTable", Model)
-</div>
-
-<div class="row">
-    <button id="btnPrevious" type="button" class="btn btn-sm btn-link">Previous</button>
-    <button id="btnNext" type="button" class="btn btn-sm btn-link">Next</button>
 </div>
 
 <!-- Modal -->
@@ -62,44 +56,20 @@
     </div>
 </div>
 
-@Scripts.Render("~/bundles/jqueryajax")
-
 @section scripts {
+    @Scripts.Render("~/bundles/jqueryajax")
+
     <script>
         $(document).ready(function () {
-            $(".btnDelete").on("click", function () {
+            $("#offices-table").on("click", ".btnDelete", function () {
                 var id = $(this).data("id");
                 $("#deleteId").val(id);
             });
-            $("#btnPrevious").on("click", function () {
-                var page = +$("#tbPageIndex").val();
-                if (page > 0) {
-                    page--;
-                }
-                else {
-                    page = 0;
-                }
-
-                $("#tbPageIndex").val(page);
+            $("#offices-table").on("click", ".btnPaging", function () {
+                var pageId = $(this).data("page");
+                $("#tbPageIndex").val(pageId);
                 $("#btnUpdate").click();
-            });
-            $("#btnNext").on("click", function () {
-                var page = +$("#tbPageIndex").val();
-                if (isFinite(page)) {
-                    var pageCount = +$("#tbPageCount").val();
-                    if (page < pageCount) {
-                        page++;
-                    }
-                    else {
-                        page = pageCount;
-                    }
-                }
-                else {
-                    page = +$("#tbPageCount").val();
-                }
-
-                $("#tbPageIndex").val(page);
-                $("#btnUpdate").click();
+                return false;
             });
         });
     </script>

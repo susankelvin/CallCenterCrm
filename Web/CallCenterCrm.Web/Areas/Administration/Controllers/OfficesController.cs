@@ -15,7 +15,7 @@
     [Authorize(Roles = "Admin")]
     public class OfficesController : Controller
     {
-        private const int PAGE_SIZE = 10;
+        private const int PAGE_SIZE = 1;
         private readonly ICallCenterCrmData data;
 
         public OfficesController(ICallCenterCrmData data)
@@ -27,7 +27,7 @@
         public ActionResult Index()
         {
             var offices = this.FilterOffices("", 0);
-            return View(offices.ToList());
+            return View(offices);
         }
 
         // Ajax update
@@ -140,49 +140,53 @@
         {
             string roleManagerId = this.data.Context.Roles.Where(r => r.Name == "Manager").First().Id;
             List<SelectListItem> managers = this.data.Users.All()
-                                                .Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
-                                                .Select(u => new SelectListItem()
-                                                       {
-                                                           Text = u.UserName,
-                                                           Value = u.Id
-                                                       })
-                                                .ToList();
+                .Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
+                .Select(u => new SelectListItem()
+                {
+                    Text = u.UserName,
+                    Value = u.Id
+                })
+                .ToList();
             return managers;
         }
 
-        private IEnumerable<IndexOfficeViewModel> FilterOffices(string tbSearch, int? pageIndex)
+        private IndexViewModel FilterOffices(string tbSearch, int? pageIndex)
         {
             string search = tbSearch.ToLower();
             var offices = this.data.Offices.All()
-                              .Include(o => o.Manager)
-                              .Where(o => o.Name.Contains(search) || o.Manager.UserName.Contains(search));
+                .Include(o => o.Manager)
+                .Where(o => o.Name.Contains(search) || o.Manager.UserName.Contains(search));
+
+            int officesCount = offices.Count();
+            int pageCount = officesCount/PAGE_SIZE;
+            if (officesCount%PAGE_SIZE != 0)
+            {
+                pageCount++;
+            }
 
             if ((pageIndex == null) || (pageIndex < 0))
             {
                 pageIndex = 0;
             }
 
-            if (pageIndex > 0)
+            if ((pageIndex > 0) && (pageIndex >= pageCount))
             {
-                int officesCount = offices.Count();
-                int maxPage = officesCount / PAGE_SIZE;
-                if (officesCount > (maxPage + 1) * PAGE_SIZE)
-                {
-                    maxPage++;
-                }
-
-                if (pageIndex > maxPage)
-                {
-                    pageIndex = maxPage;
-                }
+                pageIndex = pageCount - 1;
             }
 
-            offices = offices.OrderBy(o => o.OfficeId)
-                          .Skip((int)pageIndex * PAGE_SIZE)
-                          .Take(PAGE_SIZE);
-            var result = offices.Project()
-                             .To<IndexOfficeViewModel>()
-                             .ToList();
+            var officesList = offices.OrderBy(o => o.OfficeId)
+                .Skip((int) pageIndex*PAGE_SIZE)
+                .Take(PAGE_SIZE)
+                .Project()
+                .To<IndexOfficeViewModel>()
+                .ToList();
+
+            IndexViewModel result = new IndexViewModel()
+            {
+                ActivePage = pageIndex ?? 0,
+                PageCount = pageCount,
+                Offices = officesList
+            };
             return result;
         }
     }

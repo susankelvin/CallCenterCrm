@@ -1,8 +1,7 @@
-﻿using System.Web;
-using System.Web.Optimization;
-
-namespace CallCenterCrm.Web
+﻿namespace CallCenterCrm.Web
 {
+    using System.Web.Optimization;
+
     public class BundleConfig
     {
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
@@ -18,10 +17,6 @@ namespace CallCenterCrm.Web
 
         private static void RegisterStyles(BundleCollection bundles)
         {
-            //bundles.Add(new StyleBundle("~/Content/css").Include(
-            //    "~/Content/bootstrap.flatly.css",
-            //    "~/Content/site.css"));
-
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                 "~/Content/bootstrap.flatly.css"));
 

@@ -197,6 +197,7 @@
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\Models\Office\EditOfficeViewModel.cs" />
     <Compile Include="Areas\Administration\Models\Office\IndexOfficeViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\Office\IndexViewModel.cs" />
     <Compile Include="Areas\Administration\Models\Office\OfficeViewModel.cs" />
     <Compile Include="Areas\Administration\Models\User\EditUserViewModel.cs" />
     <Compile Include="Areas\Administration\Models\Office\NewOfficeViewModel.cs" />
