@@ -1,8 +1,6 @@
 ﻿namespace CallCenterCrm.Data
 {
-    using System;
     using System.Data.Entity;
-    using System.Linq;
     using CallCenterCrm.Data.Models;
     using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -19,7 +17,6 @@
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
-            //Database.SetInitializer<ApplicationDbContext>(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
         }
 
         public static ApplicationDbContext Create()

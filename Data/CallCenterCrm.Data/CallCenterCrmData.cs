@@ -4,16 +4,22 @@
     using System.Collections.Generic;
     using CallCenterCrm.Data.Common.Repository;
     using CallCenterCrm.Data.Models;
-    
+
     public class CallCenterCrmData : ICallCenterCrmData
     {
         private readonly ApplicationDbContext context;
 
-        private readonly Dictionary<Type, object> repositories = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> repositories;
 
         public CallCenterCrmData(ApplicationDbContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context", "Context cannot be null");
+            }
+
             this.context = context;
+            this.repositories = new Dictionary<Type, object>();
         }
 
         public ApplicationDbContext Context
@@ -84,17 +90,6 @@
                 }
             }
         }
-
-        //private IRepository<T> GetRepository<T>() where T : class
-        //{
-        //    if (!this.repositories.ContainsKey(typeof(T)))
-        //    {
-        //        var type = typeof(GenericRepository<T>);
-        //        this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
-        //    }
-
-        //    return (IRepository<T>)this.repositories[typeof(T)];
-        //}
 
         private IDeletableEntityRepository<T> GetDeletableEntityRepository<T>() where T : class, IDeletableEntity
         {

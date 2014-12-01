@@ -1,9 +1,8 @@
 namespace CallCenterCrm.Data
 {
-    using CallCenterCrm.Data.Models;
-    using System;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using CallCenterCrm.Data.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 

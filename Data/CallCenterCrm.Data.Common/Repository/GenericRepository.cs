@@ -11,7 +11,7 @@
         {
             if (context == null)
             {
-                throw new ArgumentNullException("An instance of DbContext is required to use this repository.", "context");
+                throw new ArgumentNullException("context", "An instance of DbContext is required to use this repository.");
             }
 
             this.Context = context;
@@ -70,7 +70,7 @@
             }
         }
 
-        public virtual void Delete(int id)
+        public virtual void Delete(object id)
         {
             var entity = this.Find(id);
 
