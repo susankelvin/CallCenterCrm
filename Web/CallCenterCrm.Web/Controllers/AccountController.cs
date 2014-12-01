@@ -1,17 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using CallCenterCrm.Data;
-using CallCenterCrm.Data.Models;
-using CallCenterCrm.Web.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-
-namespace CallCenterCrm.Web.Controllers
+﻿namespace CallCenterCrm.Web.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Mvc;
+    using CallCenterCrm.Data;
+    using CallCenterCrm.Data.Models;
+    using CallCenterCrm.Web.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin.Security;
+
     [Authorize]
     public class AccountController : Controller
     {

@@ -1,16 +1,16 @@
-﻿using System;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Google;
-using Owin;
-using CallCenterCrm.Web.Models;
-using CallCenterCrm.Data.Models;
-using CallCenterCrm.Data;
-
-namespace CallCenterCrm.Web
+﻿namespace CallCenterCrm.Web
 {
+    using System;
+    using CallCenterCrm.Data;
+    using CallCenterCrm.Data.Models;
+    using CallCenterCrm.Web.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin;
+    using Microsoft.Owin.Security.Cookies;
+    using Microsoft.Owin.Security.Google;
+    using Owin;
+
     public partial class Startup
     {
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864

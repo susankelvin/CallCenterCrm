@@ -1,12 +1,12 @@
 ﻿namespace CallCenterCrm.Web
 {
-    using CallCenterCrm.Data;
-    using CallCenterCrm.Web.Infrastructure;
     using System.Data.Entity;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
+    using CallCenterCrm.Data;
+    using CallCenterCrm.Web.Infrastructure;
 
     public class MvcApplication : HttpApplication
     {
