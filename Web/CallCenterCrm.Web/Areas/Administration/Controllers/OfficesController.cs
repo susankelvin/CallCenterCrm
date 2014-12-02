@@ -1,4 +1,9 @@
-﻿namespace CallCenterCrm.Web.Areas.Administration.Controllers
+﻿using System.Web;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+
+namespace CallCenterCrm.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -77,7 +82,7 @@
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpNotFound();
             }
 
             Office office = this.data.Offices.Find(id);
@@ -105,15 +110,33 @@
                 if (office == null)
                 {
                     this.TempData["ErrorMessage"] = "Invalid office id";
-                    this.RedirectToAction("Index");
                 }
 
-                Mapper.Map(model, office);
-                this.data.Offices.Update(office);
-                this.data.SaveChanges();
-                return RedirectToAction("Index");
+                ApplicationUser manager = this.data.Users.All()
+                    .FirstOrDefault(m => m.Id == model.ManagerId);
+                if (manager != null)
+                {
+                    var userManager = this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                    if (!userManager.IsInRole(manager.Id, "Manager"))
+                    {
+                        this.TempData["ErrorMessage"] = "Invalid manager";
+                    }
+                }
+                else
+                {
+                    this.TempData["ErrorMessage"] = "Invalid manager";
+                }
+
+                if (this.TempData["ErrorMessage"] == null)
+                {
+                    Mapper.Map(model, office);
+                    this.data.Offices.Update(office);
+                    this.data.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
+            model.Managers = this.GetManagers();
             return View(model);
         }
 
@@ -138,7 +161,7 @@
 
         private IEnumerable<SelectListItem> GetManagers()
         {
-            string roleManagerId = this.data.Context.Roles.Where(r => r.Name == "Manager").First().Id;
+            string roleManagerId = this.data.Context.Roles.First(r => r.Name == "Manager").Id;
             List<SelectListItem> managers = this.data.Users.All()
                 .Where(u => u.Roles.FirstOrDefault().RoleId == roleManagerId)
                 .Select(u => new SelectListItem()
@@ -147,6 +170,11 @@
                     Value = u.Id
                 })
                 .ToList();
+            managers.Insert(0, new SelectListItem()
+            {
+                Text = "Select manager",
+                Value = "0"
+            });
             return managers;
         }
 
@@ -158,8 +186,8 @@
                 .Where(o => o.Name.Contains(search) || o.Manager.UserName.Contains(search));
 
             int officesCount = offices.Count();
-            int pageCount = officesCount/PAGE_SIZE;
-            if (officesCount%PAGE_SIZE != 0)
+            int pageCount = officesCount / PAGE_SIZE;
+            if (officesCount % PAGE_SIZE != 0)
             {
                 pageCount++;
             }
@@ -175,7 +203,7 @@
             }
 
             var officesList = offices.OrderBy(o => o.OfficeId)
-                .Skip((int) pageIndex*PAGE_SIZE)
+                .Skip((int)pageIndex * PAGE_SIZE)
                 .Take(PAGE_SIZE)
                 .Project()
                 .To<IndexOfficeViewModel>()
