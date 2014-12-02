@@ -51,7 +51,7 @@
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpNotFound();
             }
 
             ApplicationUser user = this.data.Users.Find(id);
@@ -60,20 +60,8 @@
                 return HttpNotFound();
             }
 
-            List<SelectListItem> offices = this.data.Offices.All()
-                .Select(o => new SelectListItem()
-                {
-                    Text = o.Name,
-                    Value = o.OfficeId.ToString()
-                })
-                .ToList();
-            List<SelectListItem> roles = this.data.Context.Roles
-                .Select(r => new SelectListItem()
-                {
-                    Text = r.Name,
-                    Value = r.Id
-                })
-                .ToList();
+            var offices = this.GetOffices();
+            var roles = this.GetRoles();
             string roleId = user.Roles.First().RoleId;
             EditUserViewModel model = new EditUserViewModel()
             {
@@ -107,6 +95,22 @@
                 if (role == null)
                 {
                     this.TempData["ErrorMessage"] = "Invalid role";
+                    this.RedirectToAction("Index");
+                }
+
+                Office office = this.data.Offices.Find(model.OfficeId);
+                if (office == null)
+                {
+                    this.TempData["ErrorMessage"] = "Invalid office";
+                    this.RedirectToAction("Index");
+                }
+
+                model.Email = model.Email.ToLower().Trim();
+                ApplicationUser userWithEmail = this.data.Users.All()
+                    .FirstOrDefault(u => u.Email == model.Email);
+                if ((userWithEmail != null) && (userWithEmail.Id != user.Id))
+                {
+                    this.TempData["ErrorMessage"] = "Email is already taken by another user";
                     this.RedirectToAction("Index");
                 }
 
@@ -144,8 +148,8 @@
                 .Where(u => u.UserName.Contains(search) || u.Email.Contains(search));
 
             int usersCount = users.Count();
-            int pageCount = usersCount/PAGE_SIZE;
-            if (usersCount%PAGE_SIZE != 0)
+            int pageCount = usersCount / PAGE_SIZE;
+            if (usersCount % PAGE_SIZE != 0)
             {
                 pageCount++;
             }
@@ -160,11 +164,10 @@
                 pageIndex = pageCount - 1;
             }
 
-            users = users.OrderBy(u => u.Id)
-                .Skip((int) pageIndex*PAGE_SIZE)
-                .Take(PAGE_SIZE);
-
-            var usersList = users.Select(UserViewModel.FromUser)
+            var usersList = users.OrderBy(u => u.Id)
+                .Skip((int)pageIndex * PAGE_SIZE)
+                .Take(PAGE_SIZE)
+                .Select(UserViewModel.FromUser)
                 .ToList();
             foreach (var user in usersList)
             {
@@ -179,6 +182,36 @@
                 Users = usersList
             };
             return result;
+        }
+
+        private List<SelectListItem> GetOffices()
+        {
+            List<SelectListItem> offices = this.data.Offices.All()
+                .Select(o => new SelectListItem()
+                {
+                    Text = o.Name,
+                    Value = o.OfficeId.ToString()
+                })
+                .ToList();
+            offices.Insert(0, new SelectListItem()
+            {
+                Selected = true,
+                Text = "Select office",
+                Value = "0"
+            });
+            return offices;
+        }
+
+        private List<SelectListItem> GetRoles()
+        {
+            List<SelectListItem> roles = this.data.Context.Roles
+                .Select(r => new SelectListItem()
+                {
+                    Text = r.Name,
+                    Value = r.Id
+                })
+                .ToList();
+            return roles;
         }
     }
 }
