@@ -5,21 +5,24 @@
     ViewBag.Title = "Statistics";
 }
 
+@section styles
+{
+    @Styles.Render("~/Content/kendo")
+}
+
 <h2>Statistics</h2>
 
 <p>
-    @using (@Html.BeginForm("Index", "", FormMethod.Get, new { @class="form-horizontal" }))
+    @using (@Html.BeginForm("Index", "", FormMethod.Get, new { @class = "form-horizontal" }))
     {
         <div class="row">
             <div class="form-group">
-                @Html.LabelFor(c => c.CampaingId, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(c => c.CampaignId, new { @class = "control-label col-md-2 col-md-offset-2" })
                 <div class="col-md-6">
-                    @Html.DropDownListFor(c => c.CampaingId, Model.Campaigns, new { @class = "form-control" })
-                </div>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary">Load</button>
+                    @Html.DropDownListFor(c => c.CampaignId, Model.Campaigns, new { @class = "form-control", id = "ddlCampaign" })
                 </div>
             </div>
+            <input id="btnSubmit" class="hidden" type="submit" />
         </div>
     }
 </p>
@@ -45,7 +48,7 @@
     .Name("grid-operators")
     .Columns(columns =>
     {
-    columns.Bound(c => c.Name);
+        columns.Bound(c => c.Name);
         columns.Bound(c => c.SoldToTotalTimeAll);
         columns.Bound(c => c.SoldToTotalTimeCampaign);
         columns.Bound(c => c.AverageDuration);
@@ -54,3 +57,13 @@
     .Sortable()
     .Filterable()
 )
+
+@section scripts {
+    @Scripts.Render("~/bundles/kendo")
+
+    <script>
+        $('#ddlCampaign').on('change', function () {
+            $('#btnSubmit').click();
+        })
+    </script>
+}

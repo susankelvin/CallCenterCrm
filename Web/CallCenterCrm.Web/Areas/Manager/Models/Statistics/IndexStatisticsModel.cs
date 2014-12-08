@@ -10,7 +10,7 @@
         public IEnumerable<CampaignStatisticsModel> CampaignStatistics { get; set; }
 
         [Display(Name="Campaigns")]
-        public int CampaingId { get; set; }
+        public int CampaignId { get; set; }
 
         public IEnumerable<SelectListItem> Campaigns { get; set; }
 

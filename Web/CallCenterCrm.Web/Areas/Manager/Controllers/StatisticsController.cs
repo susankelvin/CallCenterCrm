@@ -19,16 +19,24 @@
         }
 
         // GET: Manager/Status
-        public ActionResult Index(int? campaingId)
+        public ActionResult Index(int? campaignId)
         {
-            if (campaingId == null)
-            {
-                campaingId = 1;
-            }
-
-            CampaignStatisticsModel campaignStatistics = GetCampaignStatistics(campaingId ?? 0);
             IndexStatisticsModel result = new IndexStatisticsModel();
-            result.CampaignStatistics = new[] { campaignStatistics };
+            if (campaignId != null)
+            {
+                Campaign campaign = this.data.Campaigns.Find(campaignId);
+                if (campaign != null)
+                {
+                    CampaignStatisticsModel campaignStatistics = GetCampaignStatistics(campaignId ?? 0);
+                    result.CampaignStatistics = new[] { campaignStatistics };
+                    result.CampaignId = campaign.CampaignId;
+                    result.OperatorsStatistics = this.GetOperatorStatistics(campaignId ?? 0);
+                }
+                else
+                {
+                    this.TempData["ErrorMessage"] = "Invalid campaign";
+                }
+            }
 
             var campaings = this.data.Campaigns.All()
                                 .Select(c => new SelectListItem()
@@ -37,9 +45,12 @@
                                            Value = c.CampaignId.ToString()
                                        })
                                 .ToList();
-            result.CampaingId = campaingId ?? 0;
+            campaings.Insert(0, new SelectListItem()
+            {
+                Text = "Select campaign",
+                Value = "0"
+            });
             result.Campaigns = campaings;
-            result.OperatorsStatistics = this.GetOperatorStatistics(campaingId ?? 0);
             return View(result);
         }
 
@@ -49,8 +60,7 @@
                             .Where(c => c.CampaignId == campaignId);
             int callsCount = calls.Count();
             int statusSoldId = this.data.Statuses.All()
-                                   .Where(s => s.Description == "Sold")
-                                   .FirstOrDefault()
+                                   .First(s => s.Description == "Sold")
                                    .StatusId;
             var soldCalls = calls.Where(c => c.StatusId == statusSoldId);
             int soldCount = soldCalls.Count();
@@ -60,8 +70,7 @@
             campaignStatistics.SoldToTotalTime = (decimal)soldCount / callsTotalTime;
             decimal price = this.data.Campaigns.Find(campaignId).Price * soldCount;
             campaignStatistics.TotelSoldPriceToTotalTime = callsTotalTime / price;
-            int notAnswered = calls.Where(c => c.Status.Description == "No answer")
-                                  .Count();
+            int notAnswered = calls.Count(c => c.Status.Description == "No answer");
             campaignStatistics.NotAnsweredToTotalCalls = (decimal)notAnswered / callsCount;
             return campaignStatistics;
         }
@@ -83,17 +92,15 @@
                                     .Include("Status")
                                     .Where(c => c.OperatorId == userId)
                                     .ToList();
-                int soldCount = userCalls.Where(c => c.Status.Description == "Sold")
-                                    .Count();
+                int soldCount = userCalls.Count(c => c.Status.Description == "Sold");
                 int totalTime = userCalls.Sum(c => c.Duration);
                 var campaignCalls = userCalls.Where(c => c.CampaignId == campaignId)
                                         .ToList();
-                int soldCampaign = campaignCalls.Where(c => c.Status.Description == "Sold")
-                                       .Count();
+                int soldCampaign = campaignCalls.Count(c => c.Status.Description == "Sold");
                 int campaignTime = campaignCalls
                                        .Sum(c => c.Duration);
                 int campaignCallsCount = campaignCalls.Count();
-                decimal averageTime = campaignCallsCount != 0 ? (decimal)campaignTime / campaignCallsCount : 0;                
+                decimal averageTime = campaignCallsCount != 0 ? (decimal)campaignTime / campaignCallsCount : 0;
                 OperatorStatisticsModel operatorStatistics = new OperatorStatisticsModel()
                 {
                     Name = user.UserName,
