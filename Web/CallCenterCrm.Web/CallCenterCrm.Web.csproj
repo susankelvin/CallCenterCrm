@@ -497,6 +497,7 @@
     <Content Include="Areas\Administration\Views\Offices\_OfficesTable.cshtml" />
     <Content Include="Areas\Manager\Views\Statistics\Index.cshtml" />
     <Content Include="Areas\Manager\Views\Shared\DisplayTemplates\Bool.cshtml" />
+    <Content Include="Areas\Manager\Views\Shared\DisplayTemplates\Date.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

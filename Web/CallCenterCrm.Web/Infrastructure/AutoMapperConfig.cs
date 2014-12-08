@@ -34,12 +34,4 @@
             Mapper.CreateMap<Campaign, CallCenterCrm.Web.Areas.Manage.Models.Campaign.IndexViewModel>();
         }
     }
-
-    public class DateTimeStringResolver : ValueResolver<DateTime, string>
-    {
-        protected override string ResolveCore(DateTime source)
-        {
-            return source.ToString("d");
-        }
-    }
 }
