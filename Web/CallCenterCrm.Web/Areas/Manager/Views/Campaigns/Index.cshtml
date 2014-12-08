@@ -18,10 +18,6 @@
     @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-default" })
 </p>
 
-<p>
-    Current culture: @this.Culture
-</p>
-
 @(Html.Kendo().Grid(Model)
     .Name("grid-campaigns")
     .Columns(columns =>
@@ -40,6 +36,7 @@
                               .PageSizes(true)
                               .ButtonCount(5))
     .Sortable()
+    .Filterable()
     .Editable(e => e.Mode(GridEditMode.PopUp))
     .DataSource(data => data.Server()
                             .PageSize(10)

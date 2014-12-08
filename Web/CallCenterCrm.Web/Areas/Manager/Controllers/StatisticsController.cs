@@ -27,10 +27,10 @@
                 Campaign campaign = this.data.Campaigns.Find(campaignId);
                 if (campaign != null)
                 {
-                    CampaignStatisticsModel campaignStatistics = GetCampaignStatistics(campaignId ?? 0);
+                    CampaignStatisticsModel campaignStatistics = GetCampaignStatistics(campaign.CampaignId);
                     result.CampaignStatistics = new[] { campaignStatistics };
                     result.CampaignId = campaign.CampaignId;
-                    result.OperatorsStatistics = this.GetOperatorStatistics(campaignId ?? 0);
+                    result.OperatorsStatistics = this.GetOperatorStatistics(campaign.CampaignId);
                 }
                 else
                 {
