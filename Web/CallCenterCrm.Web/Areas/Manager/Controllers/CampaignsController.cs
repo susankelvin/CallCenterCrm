@@ -6,6 +6,8 @@
     using System.Net;
     using System.Threading;
     using System.Web.Mvc;
+    using System.Web.Routing;
+    using AutoMapper.QueryableExtensions;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Manage.Models.Campaign;
@@ -19,17 +21,24 @@
         //private ApplicationDbContext context = new ApplicationDbContext();
         private readonly ICallCenterCrmData data;
 
-        public CampaignsController(ICallCenterCrmData data) : base()
+        public CampaignsController(ICallCenterCrmData data)
+            : base()
         {
             this.data = data;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture;
         }
 
         // GET: Manage/Campaigns
         public ActionResult Index([DataSourceRequest]
                                   DataSourceRequest request)
         {
-            return View();
+            var currentCulture = Thread.CurrentThread.CurrentCulture;
+            string managerId = this.User.Identity.GetUserId();
+            var campaigns = this.data.Campaigns.All().Where(c => c.ManagerId == managerId)
+                .Project()
+                .To<IndexViewModel>()
+                .ToList();
+            return View(campaigns);
         }
 
         // AJAX update
@@ -39,18 +48,9 @@
         {
             string managerId = this.User.Identity.GetUserId();
             var campaigns = this.data.Campaigns.All().Where(c => c.ManagerId == managerId)
-                                .Select(c => new IndexViewModel()
-                                       {
-                                           CampaignId = c.CampaignId,
-                                           Active = c.Active,
-                                           Description = c.Description,
-                                           EndDate = c.EndDate,
-                                           Price = c.Price,
-                                           Product = c.Product,
-                                           Script = c.Script,
-                                           StartDate = c.StartDate
-                                       })
-                                .ToList();
+                .Project()
+                .To<IndexViewModel>()
+                .ToList();
             return Json(campaigns.ToDataSourceResult(request));
         }
 
@@ -131,7 +131,10 @@
                 this.data.SaveChanges();
             }
 
-            return Json(new[] { model }.ToDataSourceResult(request));
+            //return Json(new[] { model }.ToDataSourceResult(request));
+
+            RouteValueDictionary routeValues = this.GridRouteValues();
+            return RedirectToAction("Index", routeValues);
         }
 
         // POST: Manage/Campaigns/Delete/5

@@ -1,10 +1,12 @@
 ﻿namespace CallCenterCrm.Web.Infrastructure
 {
+    using System;
     using AutoMapper;
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Administration.Models.Office;
     using CallCenterCrm.Web.Areas.Operator.Models.ActiveCampaigns;
     using CallCenterCrm.Web.Areas.Operator.Models.CallResult;
+    using CallCenterCrm.Web.Areas.Manage.Models.Campaign;
 
     public static class AutoMapperConfig
     {
@@ -27,6 +29,17 @@
             Mapper.CreateMap(typeof(NewOfficeViewModel), typeof(Office));
             Mapper.CreateMap(typeof(Office), typeof(EditOfficeViewModel));
             Mapper.CreateMap(typeof(EditOfficeViewModel), typeof(Office));
+
+            // Campaigns management
+            Mapper.CreateMap<Campaign, CallCenterCrm.Web.Areas.Manage.Models.Campaign.IndexViewModel>();
+        }
+    }
+
+    public class DateTimeStringResolver : ValueResolver<DateTime, string>
+    {
+        protected override string ResolveCore(DateTime source)
+        {
+            return source.ToString("d");
         }
     }
 }

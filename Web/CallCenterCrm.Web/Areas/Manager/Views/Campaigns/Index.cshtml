@@ -1,9 +1,15 @@
-﻿@using CallCenterCrm.Web.Areas.Manage.Models.Campaign
+﻿@using System.Threading
+@using CallCenterCrm.Web.Areas.Manage.Models.Campaign
 
 @model IEnumerable<IndexViewModel>
 
 @{
     ViewBag.Title = "Campaigns";
+}
+
+@section styles
+{
+    @Styles.Render("~/Content/kendo")
 }
 
 <h2>Campaigns</h2>
@@ -12,22 +18,22 @@
     @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-default" })
 </p>
 
+<p>
+    Current culture: @this.Culture
+</p>
+
 @(Html.Kendo().Grid(Model)
     .Name("grid-campaigns")
     .Columns(columns =>
     {
-        columns.Bound(c => c.StartDate).ClientTemplate("#=kendo.toString(StartDate, 'd')#");
-        //columns.Bound(c => c.EndDate).ClientTemplate("#=kendo.toString(EndDate, 'D')#");
+        columns.Bound(c => c.StartDate).Format("{0:d}");
         columns.Bound(c => c.EndDate).Format("{0:d}");
         columns.Bound(c => c.Description);
         columns.Bound(c => c.Product);
         columns.Bound(c => c.Price);
         columns.Bound(c => c.Script);
-        columns.Bound(c => c.Active);
+        columns.Bound(c => c.Active).ClientTemplate("");
         columns.Command(command => { command.Edit(); command.Destroy(); });
-        //columns.Bound(p => p.CampaignId).Title("")
-        //    .Sortable(false)
-        //    .ClientTemplate("<a href='" + Url.Action("Edit", "Campaigns") + "/#= CampaignId #'" + ">Edit</a>");
     })
     .Pageable(pageable => pageable
                               .Refresh(true)
@@ -35,8 +41,8 @@
                               .ButtonCount(5))
     .Sortable()
     .Editable(e => e.Mode(GridEditMode.PopUp))
-    .DataSource(data => data.Ajax()
-                            .Read("Read", "Campaigns")
+    .DataSource(data => data.Server()
+                            //.Read("Read", "Campaigns")
                             .PageSize(10)
                             .Model(model =>
                             {
@@ -46,3 +52,11 @@
                             .Update("Edit", "Campaigns")
                             .Destroy("Delete", "Campaigns"))
 )
+
+@section scripts {
+    @Scripts.Render("~/bundles/kendo")
+
+    @*<script>
+        kendo.culture(@Thread.CurrentThread.CurrentCulture.ToString())
+    </script>*@
+}

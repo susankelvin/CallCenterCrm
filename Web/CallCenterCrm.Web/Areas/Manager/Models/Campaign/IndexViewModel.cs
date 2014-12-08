@@ -15,7 +15,7 @@ namespace CallCenterCrm.Web.Areas.Manage.Models.Campaign
         [Required]
         [Display(Name = "Start date")]
         [UIHint("Date")]
-        [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true)]
+        [DisplayFormat(DataFormatString="{0:d}, ApplyFormatInEditMode = true")]
         public DateTime StartDate { get; set; }
 
         [Required]
@@ -37,6 +37,7 @@ namespace CallCenterCrm.Web.Areas.Manage.Models.Campaign
         public string Script { get; set; }
 
         [Required]
+        [UIHint("Bool")]
         public bool Active { get; set; }
     }
 }
