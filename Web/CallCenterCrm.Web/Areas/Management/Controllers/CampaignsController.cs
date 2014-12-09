@@ -1,9 +1,11 @@
 ﻿namespace CallCenterCrm.Web.Areas.Management.Controllers
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
@@ -22,7 +24,7 @@
             this.data = data;
         }
 
-        // GET: Manage/Campaigns
+        // GET: Management/Campaigns
         public ActionResult Index()
         {
             string managerId = this.User.Identity.GetUserId();
@@ -34,7 +36,7 @@
             return View(campaigns);
         }
 
-        // GET: Manage/Campaigns/Details/5
+        // GET: Management/Campaigns/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -50,71 +52,70 @@
             return View(campaign);
         }
 
-        // GET: Manage/Campaigns/Create
+        // GET: Management/Campaigns/Create
         [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Manage/Campaigns/Create
+        // POST: Management/Campaigns/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(NewCampaignViewModel model)
         {
-            if (ModelState.IsValid && (model.StartDate < model.EndDate))
+            if (ModelState.IsValid)
             {
-                Campaign campaign = new Campaign()
+                if (model.StartDate.Date < DateTime.Now.Date)
                 {
-                    Active = model.Active,
-                    Description = model.Description,
-                    EndDate = model.EndDate,
-                    ManagerId = this.User.Identity.GetUserId(),
-                    Price = model.Price,
-                    Product = model.Product,
-                    Script = model.Script,
-                    StartDate = model.StartDate
-                };
-
-                ApplicationUser user = this.data.Users.Find(campaign.ManagerId);
-                campaign.OfficeId = user.OfficeId ?? 0;
-                this.data.Campaigns.Add(campaign);
-                this.data.SaveChanges();
-                return RedirectToAction("Index");
+                    this.TempData["ErrorMessage"] = "Start date cannot be eariler than today";
+                }
+                else if (model.StartDate.Date > model.EndDate.Date)
+                {
+                    this.TempData["ErrorMessage"] = "End date cannot be earlier than start date";
+                }
+                else
+                {
+                    Campaign campaign = new Campaign();
+                    Mapper.Map(model, campaign);
+                    ApplicationUser user = this.data.Users.Find(this.User.Identity.GetUserId());
+                    campaign.ManagerId = user.Id;
+                    campaign.OfficeId = user.OfficeId ?? 0;
+                    this.data.Campaigns.Add(campaign);
+                    this.data.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(model);
         }
 
-        // POST: Manage/Campaigns/Edit/5
+        // POST: Management/Campaigns/Edit/5
         [HttpPost]
         public ActionResult Edit(IndexViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Campaign campaign = new Campaign()
+                Campaign campaign = this.data.Campaigns.Find(model.CampaignId);
+                ApplicationUser user = this.data.Users.Find(this.User.Identity.GetUserId());
+                if ((campaign != null) && (campaign.ManagerId == user.Id))
                 {
-                    Active = model.Active,
-                    CampaignId = model.CampaignId,
-                    Description = model.Description,
-                    EndDate = model.EndDate,
-                    ManagerId = this.User.Identity.GetUserId(),
-                    Price = model.Price,
-                    Product = model.Product,
-                    Script = model.Script,
-                    StartDate = model.StartDate
-                };
-                ApplicationUser user = this.data.Users.Find(campaign.ManagerId);
-                campaign.OfficeId = user.OfficeId ?? 0;
-                this.data.Campaigns.Update(campaign);
-                this.data.SaveChanges();
+                    Mapper.Map(model, campaign);
+                    campaign.OfficeId = user.OfficeId ?? 0;
+                    this.data.Campaigns.Update(campaign);
+                    this.data.SaveChanges();
+                }
+                else
+                {
+                    this.TempData["ErrorMessage"] = "Invalid campaign";
+                }
             }
 
             RouteValueDictionary routeValues = this.GridRouteValues();
             return RedirectToAction("Index", routeValues);
         }
 
-        // POST: Manage/Campaigns/Delete/5
+        // POST: Management/Campaigns/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int campaignId)
         {

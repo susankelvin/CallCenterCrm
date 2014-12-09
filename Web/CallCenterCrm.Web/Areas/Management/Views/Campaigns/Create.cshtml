@@ -10,7 +10,7 @@
 
 <h2>Create campaign</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Campaigns", FormMethod.Post, new { id = "createForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -20,17 +20,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.Kendo().DatePickerFor(model => model.StartDate).HtmlAttributes(new { @class = "form-control" }).Format("{0:d}")
+                @Html.EditorFor(m => m.StartDate)
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-             </div>
+            </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.Kendo().DatePickerFor(model => model.EndDate).HtmlAttributes(new { @class = "form-control" }).Format("{0:d}")
+                @Html.EditorFor(m => m.EndDate)
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -69,8 +67,8 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.CheckBoxFor(m => m.Active, new { @class = "form-control"} )&nbsp;
+            <div class="col-md-1">
+                @Html.CheckBoxFor(m => m.Active, new { @class = "form-control" })&nbsp;
             </div>
         </div>
 
@@ -86,4 +84,19 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/kendo")
+
+    @* Remove default validation for StartDate & EndDate that cannot deal with cultures and make them required *@
+    <script>
+        $(document).ready(function () {
+            setRequiredValidationRule($('#StartDate'));
+            setRequiredValidationRule($('#EndDate'));
+        });
+
+        function setRequiredValidationRule($element) {
+            $element.rules('remove');
+            $element.rules('add', {
+                required: true
+            });
+        }
+    </script>
 }

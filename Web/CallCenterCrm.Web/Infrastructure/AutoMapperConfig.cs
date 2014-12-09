@@ -3,6 +3,7 @@
     using AutoMapper;
     using CallCenterCrm.Data.Models;
     using CallCenterCrm.Web.Areas.Administration.Models.Office;
+    using CallCenterCrm.Web.Areas.Management.Models.Campaign;
     using CallCenterCrm.Web.Areas.Operator.Models.ActiveCampaigns;
     using CallCenterCrm.Web.Areas.Operator.Models.CallResult;
 
@@ -30,6 +31,8 @@
 
             // Campaigns management
             Mapper.CreateMap<Campaign, CallCenterCrm.Web.Areas.Management.Models.Campaign.IndexViewModel>();
+            Mapper.CreateMap<CallCenterCrm.Web.Areas.Management.Models.Campaign.IndexViewModel, Campaign>();
+            Mapper.CreateMap<NewCampaignViewModel, Campaign>();
         }
     }
 }

@@ -2,17 +2,18 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Web.Mvc;
 
     public class NewCampaignViewModel
     {
         [Required]
         [Display(Name="Start date")]
+        [UIHint("Date")]
         public DateTime StartDate { get; set; }
 
         [Required]
         [Display(Name = "End date")]
+        [UIHint("Date")]
         public DateTime EndDate { get; set; }
 
         [AllowHtml]
@@ -30,7 +31,6 @@
         [Required]
         public string Script { get; set; }
 
-        [Required]
         public bool Active { get; set; }
     }
 }

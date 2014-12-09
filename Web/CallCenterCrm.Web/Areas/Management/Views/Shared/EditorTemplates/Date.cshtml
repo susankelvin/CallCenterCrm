@@ -1,4 +1,5 @@
 @using System.Threading
 @model DateTime?
 
-@(Html.Kendo().DatePickerFor(m => m).Format(Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern))
+@(Html.Kendo().DatePickerFor(m => m)
+    .Format(Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern))
