@@ -42,7 +42,7 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-success" })
                 <button class="btn btn-sm btn-danger btnDelete" data-toggle="modal" data-target="#modalConfirmDelete"
-                        data-id="@item.Id">
+                        data-id="@item.Id" data-backdrop="false">
                     Delete
                 </button>
             </td>
