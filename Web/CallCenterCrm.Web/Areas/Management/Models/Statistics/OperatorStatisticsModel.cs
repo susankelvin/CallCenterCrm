@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-namespace CallCenterCrm.Web.Areas.Manager.Models.Statistics
+﻿namespace CallCenterCrm.Web.Areas.Management.Models.Statistics
 {
+    using System.ComponentModel.DataAnnotations;
     public class OperatorStatisticsModel
     {
         public string Name { get; set; }
 
-        [Display(Name="Time per sell")]
+        [Display(Name = "Time per sell")]
         public decimal SoldToTotalTimeAll { get; set; }
 
         [Display(Name = "Time per sell campaign")]

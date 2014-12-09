@@ -1,4 +1,4 @@
-﻿namespace CallCenterCrm.Web.Areas.Manage
+﻿namespace CallCenterCrm.Web.Areas.Management
 {
     using System.Web.Mvc;
 
@@ -8,15 +8,15 @@
         {
             get 
             {
-                return "Manager";
+                return "Management";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                "Manager_default",
-                "Manager/{controller}/{action}/{id}",
+                "Management_default",
+                "Management/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional });
         }
     }

@@ -1,57 +1,37 @@
-﻿namespace CallCenterCrm.Web.Areas.Manage.Controllers
+﻿namespace CallCenterCrm.Web.Areas.Management.Controllers
 {
-    using System;
-    using System.Globalization;
     using System.Linq;
     using System.Net;
-    using System.Threading;
     using System.Web.Mvc;
     using System.Web.Routing;
     using AutoMapper.QueryableExtensions;
     using CallCenterCrm.Data;
     using CallCenterCrm.Data.Models;
-    using CallCenterCrm.Web.Areas.Manage.Models.Campaign;
+    using CallCenterCrm.Web.Areas.Management.Models.Campaign;
     using Kendo.Mvc.Extensions;
-    using Kendo.Mvc.UI;
     using Microsoft.AspNet.Identity;
 
     [Authorize(Roles = "Admin, Manager")]
     public class CampaignsController : Controller
     {
-        //private ApplicationDbContext context = new ApplicationDbContext();
         private readonly ICallCenterCrmData data;
 
         public CampaignsController(ICallCenterCrmData data)
             : base()
         {
             this.data = data;
-            Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture;
         }
 
         // GET: Manage/Campaigns
-        public ActionResult Index([DataSourceRequest]
-                                  DataSourceRequest request)
+        public ActionResult Index()
         {
-            var currentCulture = Thread.CurrentThread.CurrentCulture;
             string managerId = this.User.Identity.GetUserId();
-            var campaigns = this.data.Campaigns.All().Where(c => c.ManagerId == managerId)
+            var campaigns = this.data.Campaigns.All()
+                .Where(c => c.ManagerId == managerId)
                 .Project()
                 .To<IndexViewModel>()
                 .ToList();
             return View(campaigns);
-        }
-
-        // AJAX update
-        [HttpPost]
-        public ActionResult Read([DataSourceRequest]
-                                 DataSourceRequest request)
-        {
-            string managerId = this.User.Identity.GetUserId();
-            var campaigns = this.data.Campaigns.All().Where(c => c.ManagerId == managerId)
-                .Project()
-                .To<IndexViewModel>()
-                .ToList();
-            return Json(campaigns.ToDataSourceResult(request));
         }
 
         // GET: Manage/Campaigns/Details/5
@@ -108,8 +88,7 @@
 
         // POST: Manage/Campaigns/Edit/5
         [HttpPost]
-        public ActionResult Edit([DataSourceRequest]
-                                 DataSourceRequest request, IndexViewModel model)
+        public ActionResult Edit(IndexViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -131,25 +110,27 @@
                 this.data.SaveChanges();
             }
 
-            //return Json(new[] { model }.ToDataSourceResult(request));
-
             RouteValueDictionary routeValues = this.GridRouteValues();
             return RedirectToAction("Index", routeValues);
         }
 
         // POST: Manage/Campaigns/Delete/5
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed([DataSourceRequest]
-                                            DataSourceRequest request, IndexViewModel model)
+        public ActionResult DeleteConfirmed(int campaignId)
         {
-            Campaign campaign = this.data.Campaigns.Find(model.CampaignId);
-            if (campaign != null)
+            Campaign campaign = this.data.Campaigns.Find(campaignId);
+            if ((campaign != null) && (campaign.ManagerId == this.User.Identity.GetUserId()))
             {
                 this.data.Campaigns.Delete(campaign);
                 this.data.SaveChanges();
             }
+            else
+            {
+                this.TempData["ErrorMessage"] = "Invalid campaign";
+            }
 
-            return Json(new[] { model }.ToDataSourceResult(request));
+            RouteValueDictionary routeValues = this.GridRouteValues();
+            return this.RedirectToAction("Index", routeValues);
         }
     }
 }

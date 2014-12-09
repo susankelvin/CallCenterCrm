@@ -1,4 +1,4 @@
-﻿namespace CallCenterCrm.Web.Areas.Manager.Models.Statistics
+﻿namespace CallCenterCrm.Web.Areas.Management.Models.Statistics
 {
     using System;
     using System.Collections.Generic;

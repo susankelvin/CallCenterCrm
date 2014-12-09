@@ -1,9 +1,7 @@
-﻿
-namespace CallCenterCrm.Web.Areas.Manage.Models.Campaign
+﻿namespace CallCenterCrm.Web.Areas.Management.Models.Campaign
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Web.Mvc;
 
     public class IndexViewModel
